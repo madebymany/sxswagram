@@ -27,6 +27,10 @@ server.get('/all.json', function(req, res){
   res.send(bulkData);
 });
 
+server.get('/ping', function(req, res){
+  res.send('pong');
+});
+
 server.listen(config.port);
 var socket = io.listen(server);
 

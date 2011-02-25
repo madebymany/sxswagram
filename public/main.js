@@ -50,22 +50,41 @@ var UI = {
   },
 
   connectToSocket: function(){
-    UI.socket = new io.Socket();
-    UI.socket.connect();
+    var connected = false;
+    const RETRY_INTERVAL = 10000;
+    var timeout;
 
-    setTimeout(function(){
-      if (!UI.socket.connected) {
-        UI.connectToSocket();
-      }
-    }, 5000);
+    var socket = new io.Socket();
 
-    UI.socket.on('message', function(m){
+    var retryConnection = function(){
+      setTimeout(function(){
+        if (!connected) {
+          $.get('/ping', function(data){
+            connected = true;
+            window.location.href = unescape(window.location.pathname);
+          });
+          retryConnection();
+        }
+      }, RETRY_INTERVAL);
+    };
+
+    socket.on('connect', function(){
+      connected = true;
+      clearTimeout(timeout);
+    });
+
+    socket.on('disconnect', function(){
+      connected = false;
+      retryConnection();
+      setTimeout(UI.connectToSocket, 5000);
+    });
+
+    socket.on('message', function(m){
       UI.receivedData($.parseJSON(m));
     });
 
-    UI.socket.on('disconnect', function(){
-      setTimeout(UI.connectToSocket, 5000);
-    });
+    socket.connect();
+    retryConnection();
   },
 
   start: function(){
