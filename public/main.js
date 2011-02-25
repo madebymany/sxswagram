@@ -1,7 +1,7 @@
 var Person = function(data){
   this.update(data);
   this.username = data.username;
-  this.elementId = '#' + data.username;
+  this.elementId = data.username;
 };
 
 Person.prototype.forTemplate = function(){
@@ -25,7 +25,7 @@ var Template = function(name){
 
 Template.prototype.render = function(obj){
   var html = Mustache.to_html(this.template, obj.forTemplate());
-  var element = $(obj.elementId);
+  var element = $('#'+ obj.elementId);
   if (element.length > 0) {
     element.replaceWith(html);
   } else {
