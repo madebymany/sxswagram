@@ -1,0 +1,18 @@
+/*
+
+How to get the access token:
+
+1. With your client ID and app URI (as registered):
+
+    curl -I 'https://api.instagram.com/oauth/authorize/?client_id=XXX&redirect_uri=YYY&response_type=token'
+
+2. Visit the URL in the Location header.
+
+3. Copy the access_token parameter from the location field.
+
+*/
+
+exports.clientId     = TODO;
+exports.clientSecret = TODO;
+exports.accessToken  = TODO;
+exports.port         = 4500;
