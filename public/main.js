@@ -6,7 +6,7 @@ var Person = function(data){
 
 Person.prototype.forTemplate = function(){
   var d = this.data;
-  d.location_name = d.location ? d.location.name : null;
+  d.location_name = (d.location) ? d.location.name : null;
   d.image_url = d.images.thumbnail.url;
   d.elementId = this.elementId;
   return d;
