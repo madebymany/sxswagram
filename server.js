@@ -12,24 +12,25 @@ var api = new instagram.client(config.clientId, config.accessToken);
 var server = express.createServer();
 server.use(express.staticProvider(__dirname + '/public'));
 server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
-server.listen(config.port);
 
-var bulkData = '[]';
+var people = [],
+    bulkData = '[]';
+
+async.map(config.users, function(item, done){
+  done(null, new person.person(item));
+}, function(err, results){
+  people = results;
+});
+
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
   res.send(bulkData);
 });
 
+server.listen(config.port);
 var socket = io.listen(server);
 
-var i, people = [];
-for (i = 0; i < config.users.length; i++) {
-  people.push(new person.person(config.users[i]));
-}
-
-var updated = function(p){
-  sys.log('Update for ' + p.username);
-  console.log(p.lastUpdate);
+var regenerateBulkData = function(){
   async.map(people, function(item, done){
     done(null, item.lastUpdate);
   }, function(err, results){
@@ -39,6 +40,12 @@ var updated = function(p){
       bulkData = JSON.stringify(results);
     }
   });
+};
+
+var updated = function(p){
+  sys.log(['Update for', p.username].join(' '));
+  push(JSON.stringify([p.lastUpdate]));
+  regenerateBulkData();
 };
 
 var poll = function(){
@@ -53,14 +60,22 @@ var poll = function(){
   }
 };
 
+clients = {};
+
+var push = function(message){
+  for (key in clients) { if (clients.hasOwnProperty(key)) {
+    setTimeout(function(){
+      clients[key].send(message);
+    }, 0);
+  }}
+};
+
 socket.on('connection', function(client){
-  var connected = true;
-  client.on('message', function(m){
-    sys.log('Message received: '+m);
-  });
+  clients[client.id] = client;
   client.on('disconnect', function(){
-    connected = false;
+    delete clients[client.id];
   });
+  client.send(bulkData);
 });
 
 poll();
