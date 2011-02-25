@@ -2,6 +2,7 @@ var http      = require('http'),
     io        = require('socket.io'),
     sys       = require('sys'),
     express   = require('express'),
+    async     = require('async'),
     instagram = require('./lib/instagram'),
     person    = require('./lib/person'),
     config    = require('./config/config.js');
@@ -13,6 +14,12 @@ server.use(express.staticProvider(__dirname + '/public'));
 server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 server.listen(config.port);
 
+var bulkData = '[]';
+server.get('/all.json', function(req, res){
+  res.header('Content-Type', 'application/json');
+  res.send(bulkData);
+});
+
 var socket = io.listen(server);
 
 var i, people = [];
@@ -23,6 +30,15 @@ for (i = 0; i < config.users.length; i++) {
 var updated = function(p){
   sys.log('Update for ' + p.username);
   console.log(p.lastUpdate);
+  async.map(people, function(item, done){
+    done(null, item.lastUpdate);
+  }, function(err, results){
+    if (err) {
+      sys.log(err)
+    } else {
+      bulkData = JSON.stringify(results);
+    }
+  });
 };
 
 var poll = function(){
