@@ -22,6 +22,7 @@ for (i = 0; i < config.users.length; i++) {
 
 var updated = function(p){
   sys.log('Update for ' + p.username);
+  console.log(p.lastUpdate);
 };
 
 var poll = function(){
