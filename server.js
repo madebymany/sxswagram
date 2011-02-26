@@ -1,8 +1,7 @@
 var POLL_INTERVAL_NORMAL = 60 * 1000,
     POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
 
-var http         = require('http'), 
-    sys          = require('sys'),
+var sys          = require('sys'),
     async        = require('async'),
     config       = require('./config/config.js'),
     instagram    = require('./lib/instagram').
