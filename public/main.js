@@ -51,7 +51,7 @@ var UI = {
 
   connectToSocket: function(){
     var connected = false;
-    const RETRY_INTERVAL = 10000;
+    var RETRY_INTERVAL = 10000;
     var timeout;
 
     var socket = new io.Socket();
