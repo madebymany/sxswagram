@@ -20,4 +20,4 @@ exports.clientId     = TODO;
 exports.clientSecret = TODO;
 exports.accessToken  = TODO;
 exports.port         = 4500;
-exports.users        = [TODO];
+exports.userIds      = [TODO];

@@ -10,7 +10,7 @@ var http      = require('http'),
 const POLL_INTERVAL_NORMAL = 60 * 1000,
       POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
 
-var api = new instagram.client(config.clientId, config.accessToken);
+var api = new instagram.Client(config.clientId, config.accessToken);
 
 var server = express.createServer();
 server.use(express.staticProvider(__dirname + '/public'));
@@ -19,8 +19,8 @@ server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 var people = [],
     bulkData = '[]';
 
-async.map(config.users, function(item, done){
-  done(null, new person.person(item));
+async.map(config.userIds, function(item, done){
+  done(null, new person.Person(item));
 }, function(err, results){
   people = results;
 });
