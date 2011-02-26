@@ -91,6 +91,6 @@ var UI = {
     UI.template = new Template('person_template');
     UI.connectToSocket();
   }
-}
+};
 
 $(document).ready(UI.start);

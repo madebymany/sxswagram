@@ -10,7 +10,7 @@ var http         = require('http'),
     people       = require('./lib/person').
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
-                     createServer(config.port);
+                     createServer(config.port),
     pollInterval = POLL_INTERVAL_NORMAL,
     bulkData     = '[]';
 
@@ -19,7 +19,7 @@ var log = function(m) {
   if (typeof m.stack !== 'undefined') {
     console.log(m.stack);
   }
-}
+};
 
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
