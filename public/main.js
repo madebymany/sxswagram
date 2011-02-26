@@ -52,7 +52,6 @@ var UI = {
   connectToSocket: function(){
     var connected = false;
     var RETRY_INTERVAL = 10000;
-    var timeout;
 
     var socket = new io.Socket();
 
@@ -70,7 +69,6 @@ var UI = {
 
     socket.on('connect', function(){
       connected = true;
-      clearTimeout(timeout);
     });
 
     socket.on('disconnect', function(){
