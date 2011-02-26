@@ -1,91 +1,72 @@
-var http      = require('http'), 
-    io        = require('socket.io'),
-    sys       = require('sys'),
-    express   = require('express'),
-    async     = require('async'),
-    instagram = require('./lib/instagram'),
-    person    = require('./lib/person'),
-    config    = require('./config/config.js');
+var POLL_INTERVAL_NORMAL = 60 * 1000,
+    POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
 
-const POLL_INTERVAL_NORMAL = 60 * 1000,
-      POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
+var http         = require('http'), 
+    sys          = require('sys'),
+    async        = require('async'),
+    config       = require('./config/config.js'),
+    instagram    = require('./lib/instagram').
+                     createClient(config.clientId, config.accessToken),
+    people       = require('./lib/person').
+                     fromUserIds(config.userIds),
+    server       = require('./lib/pushserver').
+                     createServer(config.port);
+    pollInterval = POLL_INTERVAL_NORMAL,
+    bulkData     = '[]';
 
-var api = new instagram.Client(config.clientId, config.accessToken);
-
-var server = express.createServer();
-server.use(express.staticProvider(__dirname + '/public'));
-server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
-
-var people = person.fromUserIds(config.userIds),
-    bulkData = '[]';
+var log = function(m) {
+  sys.log(m);
+  if (typeof m.stack !== 'undefined') {
+    console.log(m.stack);
+  }
+}
 
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
   res.send(bulkData);
 });
 
-server.get('/ping', function(req, res){
-  res.send('pong');
+server.socket.on('connection', function(client){
+  server.clientPool.add(client);
+  client.on('disconnect', function(){
+    server.clientPool.remove(client);
+  });
+  client.send(bulkData);
 });
-
-server.listen(config.port);
-var socket = io.listen(server);
 
 var regenerateBulkData = function(){
   async.map(people, function(item, done){
     done(null, item.lastUpdate);
   }, function(err, results){
-    if (err) {
-      sys.log(err)
-    } else {
-      bulkData = JSON.stringify(results);
-    }
+    if (err) { log(err); }
+    else { bulkData = JSON.stringify(results); }
   });
 };
 
-var updated = function(p){
-  sys.log(['Update for', p.username].join(' '));
-  push(JSON.stringify([p.lastUpdate]));
+var updated = function(person){
+  sys.log(['Update for', person.username].join(' '));
+  server.clientPool.broadcast(JSON.stringify([person.lastUpdate]));
   regenerateBulkData();
 };
 
-var pollInterval = POLL_INTERVAL_NORMAL;
-
 var poll = function(){
+  setTimeout(poll, pollInterval);
   sys.log('Polling');
-  var i
-  for (i = 0; i < people.length; i++) {
-    people[i].getLatestUpdate(api, function(err, p){
+
+  async.forEach(people, function(person, done){
+    person.getLatestUpdate(instagram, function(err, res){
       if (err) {
         pollInterval = POLL_INTERVAL_ERROR;
-        sys.log(err);
+        log(err);
       } else {
         pollInterval = POLL_INTERVAL_NORMAL;
-        if (p) {
-          updated(p);
-        }
+        if (res) { updated(res); }
       }
+      done();
     });
-  }
-  setTimeout(poll, pollInterval);
-};
-
-clients = {};
-
-var push = function(message){
-  for (key in clients) { if (clients.hasOwnProperty(key)) {
-    setTimeout(function(){
-      clients[key].send(message);
-    }, 0);
-  }}
-};
-
-socket.on('connection', function(client){
-  clients[client.sessionId] = client;
-  client.on('disconnect', function(){
-    delete clients[client.sessionId];
+  }, function(err){
+    if (err) { log(err); }
   });
-  client.send(bulkData);
-});
+};
 
 poll();
