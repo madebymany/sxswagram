@@ -34,3 +34,9 @@ Copy the access_token parameter from the location field.
 Search by name:
 
     curl 'https://api.instagram.com/v1/users/search?client_id=_CLIENT_ID_&q=_NAME_'
+
+## Run it
+
+    node server.js
+
+Visit whichever port you specified in `config.js`.
