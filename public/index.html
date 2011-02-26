@@ -7,12 +7,14 @@
 <script src=https://github.com/janl/mustache.js/raw/0.3.0/mustache.js></script>
 <script src=/main.js></script>
 
+<link rel="stylesheet" href="/reset.css">
+<link rel="stylesheet" href="/screen.css">
 
 <title>MxM at SxSW 2011</title>
 
 <ul id=people>
   <script id="person_template" type="text/html">
-    <li id={{elementId}}>
+    <li id={{elementId}} class="person">
       <img src={{image_url}} alt={{caption_text}}>
         <ul>
           <li>{{username}}

@@ -7,6 +7,9 @@ var http      = require('http'),
     person    = require('./lib/person'),
     config    = require('./config/config.js');
 
+const POLL_INTERVAL_NORMAL = 60 * 1000,
+      POLL_INTERVAL_ERROR  = 5 * 60 * 1000;
+
 var api = new instagram.client(config.clientId, config.accessToken);
 
 var server = express.createServer();
@@ -53,15 +56,18 @@ var updated = function(p){
 };
 
 var poll = function(){
-  setTimeout(poll, 60000);
-  var i;
+  var i, interval = POLL_INTERVAL_NORMAL;
   for (i = 0; i < people.length; i++) {
-    people[i].getLatestUpdate(api, function(p){
-      if (p) {
+    people[i].getLatestUpdate(api, function(err, p){
+      if (err) {
+        sys.log(err);
+        interval = POLL_INTERVAL_ERROR;
+      } else if (p) {
         updated(p);
       }
     });
   }
+  setTimeout(poll, interval);
 };
 
 clients = {};
