@@ -16,14 +16,8 @@ var server = express.createServer();
 server.use(express.staticProvider(__dirname + '/public'));
 server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 
-var people = [],
+var people = person.fromUserIds(config.userIds),
     bulkData = '[]';
-
-async.map(config.userIds, function(item, done){
-  done(null, new person.Person(item));
-}, function(err, results){
-  people = results;
-});
 
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
