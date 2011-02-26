@@ -8,7 +8,7 @@ var http      = require('http'),
     config    = require('./config/config.js');
 
 const POLL_INTERVAL_NORMAL = 60 * 1000,
-      POLL_INTERVAL_ERROR  = 5 * 60 * 1000;
+      POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
 
 var api = new instagram.client(config.clientId, config.accessToken);
 
@@ -55,19 +55,25 @@ var updated = function(p){
   regenerateBulkData();
 };
 
+var pollInterval = POLL_INTERVAL_NORMAL;
+
 var poll = function(){
-  var i, interval = POLL_INTERVAL_NORMAL;
+  sys.log('Polling');
+  var i
   for (i = 0; i < people.length; i++) {
     people[i].getLatestUpdate(api, function(err, p){
       if (err) {
+        pollInterval = POLL_INTERVAL_ERROR;
         sys.log(err);
-        interval = POLL_INTERVAL_ERROR;
-      } else if (p) {
-        updated(p);
+      } else {
+        pollInterval = POLL_INTERVAL_NORMAL;
+        if (p) {
+          updated(p);
+        }
       }
     });
   }
-  setTimeout(poll, interval);
+  setTimeout(poll, pollInterval);
 };
 
 clients = {};
@@ -81,9 +87,9 @@ var push = function(message){
 };
 
 socket.on('connection', function(client){
-  clients[client.id] = client;
+  clients[client.sessionId] = client;
   client.on('disconnect', function(){
-    delete clients[client.id];
+    delete clients[client.sessionId];
   });
   client.send(bulkData);
 });
