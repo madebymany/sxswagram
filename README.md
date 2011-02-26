@@ -25,7 +25,7 @@ Fill in your client ID and application URI and make a request:
 
     curl -I 'https://api.instagram.com/oauth/authorize/?client_id=_CLIENT_ID_&redirect_uri=_URI_&response_type=token'
 
-Visit the URL given in the Location header in the response.
+Visit the URL given in the Location header in the response and sign in.
 
 Copy the access_token parameter from the location field.
 
