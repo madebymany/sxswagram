@@ -10,7 +10,7 @@ var http         = require('http'),
     people       = require('./lib/person').
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
-                     createServer(config.port),
+                     createServer(config.port, __dirname + '/public');
     pollInterval = POLL_INTERVAL_NORMAL,
     bulkData     = '[]';
 
