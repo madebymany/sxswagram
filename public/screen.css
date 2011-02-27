@@ -1,14 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Schoolbell);
 
 .person {
-	border: 1px solid #aaa;
+	border: 1px solid #888;
   float: left;
   width: 150px;
   height: 210px;
 	margin: 25px;
 	padding: 10px;
 	border-radius: 3px;
-	-webkit-box-shadow: 1px 1px 3px #888;
+	-webkit-box-shadow: 1px 1px 3px #ccc;
 	position: relative;
 	overflow: hidden;
 }
