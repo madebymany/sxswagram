@@ -90,7 +90,7 @@ var UI = {
     var now = new Date().getTime() / 1000;
     $('.person .overlay').each(function(i, el){
       var age = now - el.getAttribute('data-timestamp');
-      if (age < 0) { age = 0 };
+      if (age < 0) { age = 0; }
       opacity = (age / 3600) * 0.1;
       if (opacity > 0.4) { opacity = 0.4; }
       $(el).css('opacity', opacity);

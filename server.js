@@ -9,7 +9,7 @@ var sys          = require('sys'),
     people       = require('./lib/person').
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
-                     createServer(config.port, __dirname + '/public');
+                     createServer(config.port, __dirname + '/public'),
     pollInterval = POLL_INTERVAL_NORMAL,
     bulkData     = '[]';
 
