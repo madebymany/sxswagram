@@ -27,6 +27,15 @@
 	opacity: 0;
 }
 
+.person .image_border {
+	position: absolute;
+	top: 9px;
+	left: 9px;
+	width: 148px;
+	height: 148px;
+	border: 2px solid white;
+}
+
 .angle_0 {
 	-webkit-transform: rotate(-10deg);
 }
