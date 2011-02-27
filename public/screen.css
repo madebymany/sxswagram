@@ -23,6 +23,7 @@
 	top: 0;
 	width: 170px;
 	height: 230px;
+	border-radius: 2px;
 	background-color: #dc0;
 	opacity: 0;
 }
