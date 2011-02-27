@@ -45,7 +45,6 @@ var UI = {
       } else {
         UI.people[un] = new Person(data[i]);
       }
-      console.log(data[i]);
       UI.template.render(UI.people[un]);
     }
     UI.applyAgeEffect();
@@ -92,7 +91,6 @@ var UI = {
     $('.person .overlay').each(function(i, el){
       var age = now - el.getAttribute('data-timestamp');
       if (age < 0) { age = 0 };
-      console.log(age);
       opacity = (age / 3600) * 0.1;
       if (opacity > 0.4) { opacity = 0.4; }
       $(el).css('opacity', opacity);
