@@ -1,5 +1,36 @@
+@import url(http://fonts.googleapis.com/css?family=Schoolbell);
+
 .person {
+	border: 1px solid #aaa;
   float: left;
   width: 150px;
-  height: 200px;
+  height: 210px;
+	margin: 25px;
+	padding: 10px;
+	border-radius: 3px;
+	-webkit-box-shadow: 1px 1px 3px #888;
+}
+.person li {
+	overflow: hidden;
+	font-family: 'Schoolbell', arial, serif;
+	color: #003;
+}
+
+.angle_0 {
+	-webkit-transform: rotate(-10deg);
+}
+.angle_1 {
+	-webkit-transform: rotate(-6deg);
+}
+.angle_2 {
+	-webkit-transform: rotate(-2deg);
+}
+.angle_3 {
+	-webkit-transform: rotate(2deg);
+}
+.angle_4 {
+	-webkit-transform: rotate(6deg);
+}
+.angle_5 {
+	-webkit-transform: rotate(10deg);
 }

@@ -9,6 +9,7 @@ Person.prototype.forTemplate = function(){
   d.location_name = (d.location) ? d.location.name : null;
   d.image_url = d.images.thumbnail.url;
   d.elementId = this.elementId;
+  d.angle = Math.floor(Math.random() * 6);
   return d;
 };
 
