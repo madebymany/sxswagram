@@ -48,6 +48,7 @@ var UI = {
       console.log(data[i]);
       UI.template.render(UI.people[un]);
     }
+    UI.applyAgeEffect();
   },
 
   connectToSocket: function(){
@@ -86,9 +87,27 @@ var UI = {
     retryConnection();
   },
 
+  applyAgeEffect: function(){
+    var now = new Date().getTime() / 1000;
+    $('.person .overlay').each(function(i, el){
+      var age = now - el.getAttribute('data-timestamp');
+      if (age < 0) { age = 0 };
+      console.log(age);
+      opacity = (age / 3600) * 0.1;
+      if (opacity > 0.4) { opacity = 0.4; }
+      $(el).css('opacity', opacity);
+    });
+  },
+
+  repeating: function(){
+    setTimeout(UI.repeating, 60000);
+    UI.applyAgeEffect();
+  },
+
   start: function(){
     UI.template = new Template('person_template');
     UI.connectToSocket();
+    UI.repeating();
   }
 };
 

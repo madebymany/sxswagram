@@ -15,6 +15,7 @@
 <ul id=people>
   <script id="person_template" type="text/html">
     <li id={{elementId}} class="person angle_{{angle}}">
+      <div class=overlay data-timestamp={{created_at}}></div>
       <img src={{image_url}} alt={{caption_text}}>
         <ul>
           <li>{{username}}

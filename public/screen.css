@@ -9,11 +9,22 @@
 	padding: 10px;
 	border-radius: 3px;
 	-webkit-box-shadow: 1px 1px 3px #888;
+	position: relative;
+	overflow: hidden;
 }
 .person li {
-	overflow: hidden;
 	font-family: 'Schoolbell', arial, serif;
 	color: #003;
+}
+
+.person .overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 170px;
+	height: 230px;
+	background-color: #dc0;
+	opacity: 0;
 }
 
 .angle_0 {
