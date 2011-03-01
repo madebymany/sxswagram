@@ -1,25 +1,49 @@
 <!doctype html>
 <html lang=en>
-<meta charset=UTF-8>
-
-<script src=//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js></script>
-<script src=//cdn.socket.io/stable/socket.io.js></script>
-<script src=https://github.com/janl/mustache.js/raw/0.3.0/mustache.js></script>
-<script src=/main.js></script>
-
-<link rel="stylesheet" href="/reset.css">
-<link rel="stylesheet" href="/screen.css">
-
-<title>MxM at SxSW 2011</title>
-
-<ul id=people>
-  <script id="person_template" type="text/html">
-    <li id={{element_id}} class="person angle_{{angle}}">
-      <div class=image_border></div>
-      <div class=overlay data-timestamp={{created_at}}></div>
-      <img src={{image_url}} alt={{caption_text}}>
-      <ul>
-        <li>{{username}}
-        <li>{{caption_text}}
-        <li>{{location_name}}
-  </script>
+<head>
+  <meta charset=UTF-8>
+  <link rel="stylesheet" href="/reset.css">
+  <link rel="stylesheet" href="/screen.css">
+  <title>Made by Many at SxSW 2011</title>
+</head>
+<body>
+  <header id=header>
+    <img alt="MADE BY MANY" src=/images/logo.png class=logo>
+    <nav>
+      <ul class=inlinelist>
+        <li><span>SXSW</span></li>
+        <li><a href="http://madebymany.com/what-we-do">What we do</a></li>
+        <li><a href="http://madebymany.com/clients">Clients</a></li>
+        <li><a href="http://madebymany.com/people">People</a></li>
+        <li><a href="http://madebymany.com/signals">Signals</a></li>
+        <li><a href="http://madebymany.com/blog">Blog</a></li>
+        <li><a href="http://madebymany.com/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <article>
+    <header>
+      <h1><span id="mxm">Made by Many</span> <span>Goes Southwest</span></h1>
+      <p id=strapline>We’re in Austin for SXSW. Here’s what we’re up to…</p>
+      <p id=time>Local time: <time></time></p>
+      <a id=instagram href="http://instagram.com">Instagram</a>
+    </header>
+    <ul id=people>
+      <script id="person_template" type="text/html">
+        <li id={{element_id}} class="person angle_{{angle}}">
+          <div class=image_border></div>
+          <div class=overlay data-timestamp={{created_at}}></div>
+          <img src={{image_url}} alt={{caption_text}}>
+          <ul>
+            <li>{{username}}
+            <li>{{caption_text}}
+            <li>{{location_name}}
+          </ul>
+      </script>
+    </ul>
+  </article>
+  <script src=//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js></script>
+  <script src=//cdn.socket.io/stable/socket.io.js></script>
+  <script src=https://github.com/janl/mustache.js/raw/0.3.0/mustache.js></script>
+  <script src=/main.js></script>
+</body>

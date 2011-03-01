@@ -1,57 +1,172 @@
+
 @import url(http://fonts.googleapis.com/css?family=Schoolbell);
 
+body {
+  background: url('/images/bg.gif');
+  width:100%;
+  position:relative;
+}
+
+#header {
+  position:relative;
+  margin:auto;
+  height:412px;
+  width:1024px;
+  overflow:hidden;
+  background: url('/images/header.gif');
+}
+#header .logo {
+  position:absolute;
+  top:20px;
+  left:32px;
+}
+#header nav {
+  margin: auto;
+  padding:20px 0;
+  width:960px;
+  overflow:hidden;
+  background: url('/images/nav.gif') repeat-x 0 100%;
+}
+#header nav ul {
+  float:right;
+  font-family: Georgia, Times, serif;
+  text-transform: uppercase;
+  font-size:12px;
+}
+#header nav li {
+  float:left;
+  padding:10px 9px 10px 10px;
+  background: url('/images/nav_li.gif') no-repeat 100% 50%;
+}
+#header nav li:last-child {
+  padding-right:0;
+  background:none;
+  line-height: 13px;
+}
+#header nav li a {
+  line-height: 13px;
+  display:inline-block;
+  color:#fff;
+  text-decoration:none;
+}
+#header nav li span {
+  line-height: 13px;
+  display:inline-block;
+  background:red;
+  padding:0 3px;
+}
+article {
+  width:960px;
+  margin:auto;
+}
+article header {
+  font-family: Georgia, Times, serif;
+  position:absolute;
+  width:960px;
+  top:130px;
+  margin:auto;
+  text-align:center;
+}
+article header span {
+  width:517px;
+  height:111px;
+  display:block;
+  background: url('/images/goes_southwest.gif') no-repeat;
+  overflow:hidden;
+  text-indent:-10000em;
+  margin:25px auto;
+}
+article header #mxm {
+  position:absolute;
+  top:-15px;
+  left:120px;
+  width:260px;
+  height:55px;
+  background: url('/images/logo_large.png') no-repeat;
+  margin:0;
+}
+#strapline {
+  font-weight:bold;
+  font-size:18px;
+  color:#fff;
+  text-align:center;
+}
+#time {
+  font-weight:bold;
+  font-size:31px;
+  color:#fff;
+  margin-top:15px;
+}
+#time time {
+  color:#ebd40f;
+  min-width:138px;
+  display:inline-block;
+  text-align:left;
+}
+#instagram {
+  width:151px;
+  height:121px;
+  display:block;
+  position:absolute;
+  bottom:-32px;
+  right:-17px;
+  overflow:hidden;
+  text-indent:-1000em;
+  background: url('/images/instagram.png') no-repeat;
+}
+
 .person {
-	border: 1px solid #888;
+  border: 1px solid #888;
   float: left;
   width: 150px;
   height: 210px;
-	margin: 25px;
-	padding: 10px;
-	border-radius: 3px;
-	-webkit-box-shadow: 1px 1px 3px #ccc;
-	position: relative;
-	overflow: hidden;
+  margin: 25px;
+  padding: 10px;
+  border-radius: 3px;
+  -webkit-box-shadow: 1px 1px 3px #ccc;
+  position: relative;
+  overflow: hidden;
 }
 .person li {
-	font-family: 'Schoolbell', arial, serif;
-	color: #003;
+  font-family: 'Schoolbell', arial, serif;
+  color: #003;
 }
 
 .person .overlay {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 170px;
-	height: 230px;
-	border-radius: 2px;
-	background-color: #dc0;
-	opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 170px;
+  height: 230px;
+  border-radius: 2px;
+  background-color: #dc0;
+  opacity: 0;
 }
 
 .person .image_border {
-	position: absolute;
-	top: 9px;
-	left: 9px;
-	width: 148px;
-	height: 148px;
-	border: 2px solid white;
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 148px;
+  height: 148px;
+  border: 2px solid white;
 }
 
 .angle_0 {
-	-webkit-transform: rotate(-10deg);
+  -webkit-transform: rotate(-10deg);
 }
 .angle_1 {
-	-webkit-transform: rotate(-6deg);
+  -webkit-transform: rotate(-6deg);
 }
 .angle_2 {
-	-webkit-transform: rotate(-2deg);
+  -webkit-transform: rotate(-2deg);
 }
 .angle_3 {
-	-webkit-transform: rotate(2deg);
+  -webkit-transform: rotate(2deg);
 }
 .angle_4 {
-	-webkit-transform: rotate(6deg);
+  -webkit-transform: rotate(6deg);
 }
 .angle_5 {
-	-webkit-transform: rotate(10deg);
+  -webkit-transform: rotate(10deg);
 }

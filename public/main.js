@@ -37,6 +37,37 @@ Template.prototype.render = function(obj){
 var UI = {
   people: {},
 
+  localTime : {
+    start : function () {
+      var today         = new Date(),
+          localTime     = today.getTime(),
+          localOffset   = today.getTimezoneOffset() * 60000,
+          utc           = localTime - localOffset,
+          austinOffset  = -6,
+          austin        = utc + (3600000*austinOffset),
+          todayInAustin = new Date(austin),
+          h             = todayInAustin.getHours(),
+          m             = todayInAustin.getMinutes(),
+          s             = todayInAustin.getSeconds(),
+          ampm          = (h > 11) ? "pm" : "am";
+
+      if (h > 12) {
+        h = h -12;
+      } else if (h == 0) {
+        h = 12;
+      }
+
+      m = this.check(m);
+      s = this.check(s);
+      $('#time time').html(h+":"+m+" "+ampm).attr('datetime', today);
+      t = setTimeout('UI.localTime.start();',500);
+    },
+    check : function (i) {
+      if (i<10) { i="0" + i; }
+      return i;
+    }
+  },
+
   receivedData: function(data){
     for (var i = 0; i < data.length; i++) {
       var un = data[i].username;
@@ -47,7 +78,7 @@ var UI = {
       }
       UI.template.render(UI.people[un]);
     }
-    UI.applyAgeEffect();
+    //UI.applyAgeEffect();
   },
 
   connectToSocket: function(){
@@ -99,10 +130,11 @@ var UI = {
 
   repeating: function(){
     setTimeout(UI.repeating, 60000);
-    UI.applyAgeEffect();
+    //UI.applyAgeEffect();
   },
 
   start: function(){
+    UI.localTime.start();
     UI.template = new Template('person_template');
     UI.connectToSocket();
     UI.repeating();
