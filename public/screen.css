@@ -8,24 +8,31 @@ body {
 }
 
 #header {
-  position:relative;
   margin:auto;
-  height:412px;
-  width:1024px;
-  overflow:hidden;
-  background: url('/images/header.gif');
+  height:404px;
+  width:100%;
+  background: #0a0909;
+}
+#header .bg {
+  position:absolute;
+  top:0;
+  display:block;
+  width:100%;
+  text-align:center;
 }
 #header .logo {
   position:absolute;
   top:20px;
-  left:32px;
+  left:0;
 }
 #header nav {
+  position:relative;
   margin: auto;
-  padding:20px 0;
+  padding:20px 0 40px;
   width:960px;
-  overflow:hidden;
+  height:13px;
   background: url('/images/nav.gif') repeat-x 0 100%;
+  z-index:10;
 }
 #header nav ul {
   float:right;
@@ -57,7 +64,7 @@ body {
 }
 article {
   width:960px;
-  margin:auto;
+  margin:20px auto;
 }
 article header {
   font-family: Georgia, Times, serif;
@@ -115,58 +122,63 @@ article header #mxm {
   background: url('/images/instagram.png') no-repeat;
 }
 
+
+#people {
+  overflow:hidden;
+  margin-right:-10px;
+}
 .person {
-  border: 1px solid #888;
-  float: left;
-  width: 150px;
-  height: 210px;
-  margin: 25px;
-  padding: 10px;
-  border-radius: 3px;
-  -webkit-box-shadow: 1px 1px 3px #ccc;
-  position: relative;
-  overflow: hidden;
+  width:312px;
+  height:310px;
+  float:left;
+  margin-right:10px;
+  position:relative;
 }
-.person li {
-  font-family: 'Schoolbell', arial, serif;
-  color: #003;
-}
-
 .person .overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 170px;
-  height: 230px;
-  border-radius: 2px;
-  background-color: #dc0;
-  opacity: 0;
+  width:302px;
+  height:302px;
+  position:absolute;
+  top:4px;
+  left:6px;
+  background: url('/images/mask1.png');
+  z-index:11;
 }
-
-.person .image_border {
-  position: absolute;
-  top: 9px;
-  left: 9px;
-  width: 148px;
-  height: 148px;
-  border: 2px solid white;
+.person:nth-child(2n) .overlay {
+  background: url('/images/mask2.png');
 }
-
-.angle_0 {
-  -webkit-transform: rotate(-10deg);
+.person .placeholder,
+.person ul {
+  width:288px;
+  height:288px;
+  position:absolute;
+  top:10px;
+  left:13px;
+  z-index:9;
+  background: rgba(55,55,55,.5);
+  overflow:hidden;
 }
-.angle_1 {
-  -webkit-transform: rotate(-6deg);
+.person .placeholder img {
+  width:312px;
+  margin:-12px 0 0 -12px;
 }
-.angle_2 {
-  -webkit-transform: rotate(-2deg);
+.person cite {
+  width:58px;
+  height:58px;
+  padding:1px;
+  display:block;
+  position:absolute;
+  right:0px;
+  z-index:12;
+  background:#fff;
+  border:1px solid #999;
 }
-.angle_3 {
-  -webkit-transform: rotate(2deg);
+.person cite img {
+  width:58px;
+  height:58px;
 }
-.angle_4 {
-  -webkit-transform: rotate(6deg);
+.person ul {
+  display:none;
 }
-.angle_5 {
-  -webkit-transform: rotate(10deg);
+.person:hover ul {
+  display:block;
 }
