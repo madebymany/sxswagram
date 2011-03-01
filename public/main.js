@@ -70,7 +70,6 @@ var UI = {
 
   receivedData: function(data){
     for (var i = 0; i < data.length; i++) {
-      console.log(data[i]);
       var un = data[i].username;
       if (UI.people[un]) {
         UI.people[un].update(data[i]);
