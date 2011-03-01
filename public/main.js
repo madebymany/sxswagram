@@ -7,7 +7,7 @@ var Person = function(data){
 Person.prototype.forTemplate = function(){
   var d = this.data;
   d.location_name = (d.location) ? d.location.name : null;
-  d.image_url = d.images.thumbnail.url;
+  d.image_url = d.images.low_resolution.url;
   d.element_id = this.elementId;
   d.angle = Math.floor(Math.random() * 6);
   return d;
@@ -70,6 +70,7 @@ var UI = {
 
   receivedData: function(data){
     for (var i = 0; i < data.length; i++) {
+      console.log(data[i]);
       var un = data[i].username;
       if (UI.people[un]) {
         UI.people[un].update(data[i]);
