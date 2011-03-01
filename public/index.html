@@ -8,8 +8,8 @@
 </head>
 <body>
   <header id=header>
-    <img alt="MADE BY MANY" src=/images/logo.png class=logo>
     <nav>
+      <img alt="MADE BY MANY" src=/images/logo.png class=logo>
       <ul class=inlinelist>
         <li><span>SXSW</span></li>
         <li><a href="http://madebymany.com/what-we-do">What we do</a></li>
@@ -20,6 +20,7 @@
         <li><a href="http://madebymany.com/contact">Contact</a></li>
       </ul>
     </nav>
+    <span class=bg><img alt="Sketch notes from last year's conference" src=/images/header.gif></span>
   </header>
   <article>
     <header>
@@ -30,15 +31,15 @@
     </header>
     <ul id=people>
       <script id="person_template" type="text/html">
-        <li id={{element_id}} class="person angle_{{angle}}">
-          <div class=image_border></div>
+        <li id={{element_id}} class="person {{username}} angle_{{angle}}">
           <div class=overlay data-timestamp={{created_at}}></div>
-          <img src={{image_url}} alt={{caption_text}}>
+          <span class=placeholder><img src={{image_url}} alt={{caption_text}}></span>
           <ul>
             <li>{{username}}
             <li>{{caption_text}}
             <li>{{location_name}}
           </ul>
+          <cite><img src={{profile_picture}}></cite>
       </script>
     </ul>
   </article>
