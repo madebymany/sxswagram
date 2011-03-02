@@ -35,11 +35,11 @@
           <div class=overlay data-timestamp={{created_at}}></div>
           <span class=placeholder><img src={{image_url}} alt={{caption_text}}></span>
           <ul>
-            <li>{{username}}
-            <li>{{caption_text}}
-            <li>{{location_name}}
+            <li class=caption><span>{{caption_text}}
+            <li class=location><span>{{location_name}}
           </ul>
-          <cite><img src={{profile_picture}}></cite>
+          <div class=avatar><img src={{profile_picture}}></div>
+          <cite><img src=/images/name_{{username}}.png></cite>
       </script>
     </ul>
   </article>
