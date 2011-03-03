@@ -1,6 +1,3 @@
-var POLL_INTERVAL_NORMAL = 60 * 1000,
-    POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
-
 var sys          = require('sys'),
     async        = require('async'),
     config       = require('./config/config.js'),
@@ -10,7 +7,7 @@ var sys          = require('sys'),
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
                      createServer(config.port, __dirname + '/public'),
-    pollInterval = POLL_INTERVAL_NORMAL,
+    pollInterval = config.pollInterval.normal,
     bulkData     = '[]';
 
 var log = function(m) {
@@ -55,10 +52,10 @@ var poll = function(){
   async.forEach(people, function(person, done){
     person.getLatestUpdate(instagram, function(err, res){
       if (err) {
-        pollInterval = POLL_INTERVAL_ERROR;
+        pollInterval = config.pollInterval.error;
         log(err);
       } else {
-        pollInterval = POLL_INTERVAL_NORMAL;
+        pollInterval = config.pollInterval.normal;
         if (res) { updated(res); }
       }
       done();
