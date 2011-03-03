@@ -1,19 +1,14 @@
 var sys          = require('sys'),
     async        = require('async'),
-    config       = require('../config/config.js'),
+    config       = require('../config/config'),
     instagram    = require('../lib/instagram').
                      createClient(config.clientId, config.accessToken),
+    errorHandler = require('../lib/errorhandler'),
     database     = require('../lib/database');
 
-var handle = function(onSuccess){
-  return function(err, a, b, c, d){
-    if (err) {
-      console.log(err.stack);
-    } else {
-      onSuccess(a, b, c, d); // Simpler than argument slicing
-    }  
-  }
-};
+var handle = errorHandler.handler(function(err){
+  console.log(err.stack);
+});
 
 database.withCollection(config, handle(function(db, collection){
   async.forEach(config.userIds, function(userId, done){
