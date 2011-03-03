@@ -5,44 +5,49 @@
   <link rel="stylesheet" href="/reset.css">
   <link rel="stylesheet" href="/screen.css">
   <title>Made by Many at SxSW 2011</title>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 </head>
 <body>
   <header id=header>
     <nav>
-      <img alt="MADE BY MANY" src=/images/logo.png class=logo>
-      <ul class=inlinelist>
+      <ul>
         <li><span>SXSW</span></li>
-        <li><a href="http://madebymany.com/what-we-do">What we do</a></li>
-        <li><a href="http://madebymany.com/clients">Clients</a></li>
-        <li><a href="http://madebymany.com/people">People</a></li>
-        <li><a href="http://madebymany.com/signals">Signals</a></li>
-        <li><a href="http://madebymany.com/blog">Blog</a></li>
-        <li><a href="http://madebymany.com/contact">Contact</a></li>
+        <li><a href=http://madebymany.com/what-we-do>What we do</a></li>
+        <li><a href=http://madebymany.com/clients>Clients</a></li>
+        <li><a href=http://madebymany.com/people>People</a></li>
+        <li><a href=http://madebymany.com/signals>Signals</a></li>
+        <li><a href=http://madebymany.com/blog>Blog</a></li>
+        <li><a href=http://madebymany.com/contact>Contact</a></li>
       </ul>
     </nav>
     <span class=bg><img alt="Sketch notes from last year's conference" src=/images/header.gif></span>
   </header>
   <article>
     <header>
-      <h1><span id="mxm">Made by Many</span> <span>Goes Southwest</span></h1>
+      <h1><span id=mxm>Made by Many</span> <span>Goes Southwest</span></h1>
       <p id=strapline>We’re in Austin for SXSW. Here’s what we’re up to…</p>
       <p id=time>Local time: <time></time></p>
       <a id=instagram href="http://instagram.com">Instagram</a>
     </header>
     <ul id=people>
-      <script id="person_template" type="text/html">
+      <script id=person_template type=text/html>
         <li id={{element_id}} class="person {{username}} angle_{{angle}}">
           <div class=overlay data-timestamp={{created_at}}></div>
           <span class=placeholder><img src={{image_url}} alt={{caption_text}}></span>
           <ul>
-            <li class=caption><span>{{caption_text}}
-            <li class=location><span>{{location_name}}
+            <li class=caption><span><img src=/images/bubble.png> {{caption_text}}
+            <li class=location><span><img src=/images/location_pin.png> {{location_name}}
           </ul>
           <div class=avatar><img src={{profile_picture}}></div>
           <cite><img src=/images/name_{{username}}.png></cite>
       </script>
     </ul>
+    <p class=load_more>Loading older Instagrams...</p>
+    <p class=load_new><span id="new_text">We have <span id=new_count>4</span> new images! Click here to refresh</span></p>
   </article>
+  <script src=//yandex.st/modernizr/1.7/modernizr.min.js></script>
   <script src=//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js></script>
   <script src=//cdn.socket.io/stable/socket.io.js></script>
   <script src=https://github.com/janl/mustache.js/raw/0.3.0/mustache.js></script>

@@ -1,127 +1,175 @@
-body {
-  background: url('/images/bg.gif');
-  width:100%;
-  position:relative;
-  font-family: Georgia, Times, serif;
+@media screen and (min-device-width: 750px)  {
+  body {
+    background: url('/images/bg.gif');
+    width:100%;
+    position:relative;
+    font-family: Georgia, Times, serif;
+  }
+  #header {
+    margin:auto;
+    height:412px;
+    width:100%;
+    background: url('/images/header_bg.gif') 50% 0 repeat-x;
+  }
+  #header .bg {
+    position:absolute;
+    top:0;
+    display:block;
+    width:100%;
+    text-align:center;
+  }
+  #header .logo {
+    position:absolute;
+    top:20px;
+    left:0;
+  }
+  #header nav {
+    position:relative;
+    margin: auto;
+    padding:20px 0 40px;
+    width:960px;
+    height:13px;
+    background: url('/images/nav.gif') repeat-x 0 100%;
+    z-index:10;
+  }
+  #header nav ul {
+    float:right;
+    text-transform: uppercase;
+    font-size:12px;
+  }
+  #header nav li {
+    float:left;
+    padding:10px 9px 10px 10px;
+    background: url('/images/nav_li.gif') no-repeat 100% 50%;
+  }
+  #header nav li:last-child {
+    padding-right:0;
+    background:none;
+    line-height: 13px;
+  }
+  #header nav li a {
+    line-height: 13px;
+    display:inline-block;
+    color:#fff;
+    text-decoration:none;
+  }
+  #header nav li span {
+    line-height: 13px;
+    display:inline-block;
+    background:red;
+    padding:0 3px;
+  }
+  article {
+    width:960px;
+    margin:20px auto;
+  }
+  article header {
+    position:absolute;
+    width:960px;
+    top:130px;
+    margin:auto;
+    text-align:center;
+  }
+  article header span {
+    width:517px;
+    height:111px;
+    display:block;
+    background: url('/images/goes_southwest.gif') no-repeat;
+    overflow:hidden;
+    text-indent:-10000em;
+    margin:25px auto;
+  }
+  article header #mxm {
+    position:absolute;
+    top:-15px;
+    left:120px;
+    width:260px;
+    height:55px;
+    background: url('/images/logo_large.png') no-repeat;
+    margin:0;
+  }
+  #strapline {
+    font-weight:bold;
+    font-size:18px;
+    color:#fff;
+    text-align:center;
+  }
+  #time {
+    font-weight:bold;
+    font-size:31px;
+    color:#fff;
+    margin-top:15px;
+  }
+  #time time {
+    color:#ebd40f;
+    min-width:138px;
+    display:inline-block;
+    text-align:left;
+  }
+  #instagram {
+    width:151px;
+    height:121px;
+    display:block;
+    position:absolute;
+    bottom:-32px;
+    right:-17px;
+    overflow:hidden;
+    text-indent:-1000em;
+    background: url('/images/instagram.png') no-repeat;
+  }
 }
-
-#header {
-  margin:auto;
-  height:412px;
-  width:100%;
-  background: url('/images/header_bg.gif') 50% 0 repeat-x;
-}
-#header .bg {
-  position:absolute;
-  top:0;
-  display:block;
-  width:100%;
-  text-align:center;
-}
-#header .logo {
-  position:absolute;
-  top:20px;
-  left:0;
-}
-#header nav {
-  position:relative;
-  margin: auto;
-  padding:20px 0 40px;
-  width:960px;
-  height:13px;
-  background: url('/images/nav.gif') repeat-x 0 100%;
-  z-index:10;
-}
-#header nav ul {
-  float:right;
-  text-transform: uppercase;
-  font-size:12px;
-}
-#header nav li {
-  float:left;
-  padding:10px 9px 10px 10px;
-  background: url('/images/nav_li.gif') no-repeat 100% 50%;
-}
-#header nav li:last-child {
-  padding-right:0;
-  background:none;
-  line-height: 13px;
-}
-#header nav li a {
-  line-height: 13px;
-  display:inline-block;
-  color:#fff;
-  text-decoration:none;
-}
-#header nav li span {
-  line-height: 13px;
-  display:inline-block;
-  background:red;
-  padding:0 3px;
-}
-article {
-  width:960px;
-  margin:20px auto;
-}
-article header {
-  position:absolute;
-  width:960px;
-  top:130px;
-  margin:auto;
-  text-align:center;
-}
-article header span {
-  width:517px;
-  height:111px;
-  display:block;
-  background: url('/images/goes_southwest.gif') no-repeat;
-  overflow:hidden;
-  text-indent:-10000em;
-  margin:25px auto;
-}
-article header #mxm {
-  position:absolute;
-  top:-15px;
-  left:120px;
-  width:260px;
-  height:55px;
-  background: url('/images/logo_large.png') no-repeat;
-  margin:0;
-}
-#strapline {
-  font-weight:bold;
-  font-size:18px;
-  color:#fff;
-  text-align:center;
-}
-#time {
-  font-weight:bold;
-  font-size:31px;
-  color:#fff;
-  margin-top:15px;
-}
-#time time {
-  color:#ebd40f;
-  min-width:138px;
-  display:inline-block;
-  text-align:left;
-}
-#instagram {
-  width:151px;
-  height:121px;
-  display:block;
-  position:absolute;
-  bottom:-32px;
-  right:-17px;
-  overflow:hidden;
-  text-indent:-1000em;
-  background: url('/images/instagram.png') no-repeat;
-}
-
-
 #people {
   overflow:hidden;
   margin-right:-10px;
+}
+article {
+  padding-bottom:100px;
+}
+.load_more {
+  background: url('/images/load_more.gif');
+  text-align:center;
+  overflow:hidden;
+  width:227px;
+  height:36px;
+  line-height:36px;
+  margin:10px auto;
+}
+.load_new {
+  height:0;
+  width:100%;
+  background: url('/images/load_new.png') repeat-x 50% 0;
+  position:fixed;
+  bottom:0;
+  left:0;
+  z-index:20;
+  text-align:center;
+}
+#new_text {
+  display:0;
+  position:relative;
+  display:block;
+  width:480px;
+  height:73px;
+  overflow:hidden;
+  line-height:73px;
+  background: url('/images/load_new_text.png') no-repeat 0 50%;
+  margin:0 auto;
+  color:#fff;
+  font-weight:bold;
+  font-size:15px;
+  text-indent:35px;
+  cursor:pointer;
+}
+#new_count {
+  position:absolute;
+  font-size:12px;
+  top:15px;
+  left:34px;
+  display:block;
+  text-indent:0;
+  width:35px;
+  height:21px;
+  line-height:21px;
 }
 .person {
   width:312px;
@@ -149,7 +197,6 @@ article header #mxm {
 .person:nth-child(4n+3) .overlay {
   background: url('/images/mask4.png');
 }
-
 .person .placeholder,
 .person ul {
   width:288px;
@@ -210,28 +257,29 @@ article header #mxm {
   text-align:center;
   overflow:hidden;
   min-height:30px;
-  line-height:1.3;
-  margin: 0 30px;
+  margin: 0 30px 5px;
 }
 .person .caption {
   font-size: 20px;
   font-weight:bold;
   margin-top:90px;
+  line-height:1.2;
 }
 .person ul span {
   display:inline-block;
-  min-height:30px;
   vertical-align:middle;
-  padding-left:30px;
-  background: url('/images/bubble.png') no-repeat 0 50%;
+
+}
+.person li img {
+  vertical-align:middle;
+  margin-right:5px;
 }
 .person .location span {
-  line-height:30px;
-  background: url('/images/location_pin.png') no-repeat 0 50%;
-}
-.person:hover ul {
-  display:block;
-}
 
-
+}
+@media screen and (max-device-width: 480px)  {
+  html body {
+    background:red;
+  }
+}
 

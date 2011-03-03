@@ -60,12 +60,62 @@ var UI = {
       m = this.check(m);
       s = this.check(s);
       $('#time time').html(h+":"+m+" "+ampm).attr('datetime', today);
-      t = setTimeout('UI.localTime.start();',500);
+      t = setTimeout('UI.localTime.start();',5000);
     },
     check : function (i) {
       if (i<10) { i="0" + i; }
       return i;
     }
+  },
+
+  meta : function (el) {
+    el.each(function(){
+      $('li', this).each(function(){
+        var item = $(this),
+            no_whitespace = item.text().replace(/^\s*|\s*$/g,'');
+        if (no_whitespace.length == 0) {
+          item.text('');
+        }
+      });
+      $(this).css('opacity',0).show();
+    });
+    
+    el.parent().hover(function(){
+      var this_el = $('ul',this);
+      this_el.animate({'opacity':1},{queue:false});
+    }, function(){
+      var this_el = $('ul',this);
+      this_el.animate({'opacity':0},{queue:false});
+    });
+  },
+
+  loadMore : function () {
+    var win = $(window),
+        load_more = $('.load_more').hide();
+    // fire when user scrolls to the bottom of the page.
+    win.scroll(function(){
+      if  (win.scrollTop() == $(document).height() - win.height()){
+        load_more.show();
+        UI.loadOlder();
+      }
+    });
+  },
+
+  loadOlder :function () {
+    // go get older posts
+  },
+
+  loadNew : function () {
+    var load_new = $('.load_new'),
+        new_text = $('#new_text');
+    
+    load_new.animate({height:73});
+    
+    // Initiate new images on click
+    new_text.click(function(){
+      $(this).parent().animate({height:0});
+      $('html,body').animate({scrollTop: $("#people").offset().top - 20},'slow');
+    });
   },
 
   receivedData: function(data){
@@ -79,6 +129,7 @@ var UI = {
       UI.template.render(UI.people[un]);
     }
     //UI.applyAgeEffect();
+    UI.meta($('.person ul'));
   },
 
   connectToSocket: function(){
@@ -131,6 +182,7 @@ var UI = {
   repeating: function(){
     setTimeout(UI.repeating, 60000);
     //UI.applyAgeEffect();
+    UI.meta($('.person ul'));
   },
 
   start: function(){
@@ -138,6 +190,9 @@ var UI = {
     UI.template = new Template('person_template');
     UI.connectToSocket();
     UI.repeating();
+    UI.meta($('.person ul'));
+    UI.loadMore();
+    UI.loadNew();
   }
 };
 
