@@ -4,6 +4,7 @@ var sys          = require('sys'),
     instagram    = require('./lib/instagram').
                      createClient(config.clientId, config.accessToken),
     errorHandler = require('./lib/errorhandler'),
+    database     = require('./lib/database'),
     people       = require('./lib/person').
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
@@ -22,6 +23,22 @@ var handle = errorHandler.handler(function(err){
   printErr(err);
 });
 
+console.log(people);
+
+database.withCollection(config, handle(function(db, collection){
+  async.forEach(config.userIds, function(userId, done){
+    collection.find({'user.id': userId}, {limit: 1, sort: {id: -1}}, handle(function(cursor){
+      cursor.toArray(handle(function(docs){
+        people[userId].setMinId(docs[0].id);
+        done();
+      }));
+    }));
+  }, handle(function(){
+    console.log(people);
+  }));
+}));
+
+    /*
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
   res.send(bulkData);
@@ -68,3 +85,4 @@ var poll = function(){
 };
 
 poll();
+*/
