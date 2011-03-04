@@ -16,12 +16,31 @@ curl 'https://api.instagram.com/v1/users/search?client_id=_CLIENT_ID_&q=_NAME_'
 
 */
 
-exports.clientId     = TODO;
-exports.clientSecret = TODO;
-exports.accessToken  = TODO;
-exports.port         = 4500;
-exports.pollInterval = {
-  normal: 60 * 1000,
-  error:  5 * 60 * 1000
-}
-exports.userIds      = [TODO];
+exports.config = {
+  clientId: TODO,
+  clientSecret: TODO,
+  accessToken : TODO,
+  pollInterval: {
+    normal: 60 * 1000,
+    error: 5 * 60 * 1000
+  },
+  port: 4500,
+  database: {
+    name: 'sxswagram',
+    hostname: 'localhost',
+    port: 27017
+  },
+  chunkSize: 12,
+  userIds: [
+     868785, // scandaloust
+    1366328, // malbonster
+    1188098, // stueccles
+    1178512, // juxtapozed
+    1671424, // crashtherocks
+     824364, // saradotdub
+     152929, // juzmcmuz
+    1590786, // ninjabiscuit
+    1616237, // conordelahunty
+    1288536  // ohrworm
+  ]
+};

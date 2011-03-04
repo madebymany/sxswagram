@@ -1,10 +1,10 @@
-var Person = function(data){
+var Update = function(data){
   this.update(data);
   this.username = data.username;
   this.elementId = data.username;
 };
 
-Person.prototype.forTemplate = function(){
+Update.prototype.forTemplate = function(){
   var d = this.data;
   d.location_name = (d.location) ? d.location.name : null;
   d.image_url = d.images.low_resolution.url;
@@ -13,7 +13,7 @@ Person.prototype.forTemplate = function(){
   return d;
 };
 
-Person.prototype.update = function(data){
+Update.prototype.update = function(data){
   this.data = data;
 };
 
@@ -35,7 +35,7 @@ Template.prototype.render = function(obj){
 };
 
 var UI = {
-  people: {},
+  updates: {},
 
   localTime : {
     start : function () {
@@ -132,23 +132,42 @@ var UI = {
     
     // Initiate loading new posts on click
     new_text.click(function(){
-      UI.highlightlatestPosts($('.person:lt(4)'));
+      UI.highlightlatestPosts($('.update:lt(4)'));
       $(this).parent().animate({height:0});
-      $('html,body').animate({scrollTop: $("#people").offset().top - 20},'slow');
+      $('html,body').animate({scrollTop: $("#updates").offset().top - 20},'slow');
     });
   },
+	
+	requestMore: function(timestamp){
+		UI.socket.send('["more", '+timestamp+']'); // TODO: how do you *generate* JSON in jQuery?
+	},
 
-  receivedData: function(data){
+  receivedMessage: function(m){
+		console.log(m);
+	  var data = m[1];
+		switch (m[0]) {
+			case 'start':
+				// TODO: initial fill
+				break;
+		  case 'new':
+				// TODO: add to pool of new updates
+				break;
+			case 'more':
+				// TODO: fill up infinite scroll
+				break;
+		}
+		/*
     for (var i = 0; i < data.length; i++) {
       var un = data[i].username;
-      if (UI.people[un]) {
-        UI.people[un].update(data[i]);
+      if (UI.updates[un]) {
+        UI.updates[un].update(data[i]);
       } else {
-        UI.people[un] = new Person(data[i]);
+        UI.updates[un] = new Update(data[i]);
       }
-      UI.template.render(UI.people[un]);
+      UI.template.render(UI.updates[un]);
     }
-    UI.meta($('.person ul'));
+		*/
+    UI.meta($('.update ul'));
   },
 
   connectToSocket: function(){
@@ -156,6 +175,7 @@ var UI = {
     var RETRY_INTERVAL = 10000;
 
     var socket = new io.Socket();
+		UI.socket = socket;
 
     var retryConnection = function(){
       setTimeout(function(){
@@ -179,8 +199,8 @@ var UI = {
       setTimeout(UI.connectToSocket, 5000);
     });
 
-    socket.on('message', function(m){
-      UI.receivedData($.parseJSON(m));
+    socket.on('message', function(raw){
+      UI.receivedMessage($.parseJSON(raw));
     });
 
     socket.connect();
@@ -189,7 +209,7 @@ var UI = {
 
   repeating: function(){
     setTimeout(UI.repeating, 60000);
-    UI.meta($('.person ul'));
+    UI.meta($('.update ul'));
   },
 
   iDevice : {
@@ -212,10 +232,10 @@ var UI = {
 
   start: function(){
     UI.localTime.start();
-    UI.template = new Template('person_template');
+    UI.template = new Template('update_template');
     UI.connectToSocket();
     UI.repeating();
-    UI.meta($('.person ul'));
+    UI.meta($('.update ul'));
     UI.loadMore();
     UI.loadNew();
     //test for iPad/iPhone
