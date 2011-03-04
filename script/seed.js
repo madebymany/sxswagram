@@ -10,7 +10,7 @@ var handle = errorHandler.handler(function(err){
   console.log(err.stack);
 });
 
-database.withCollection(config, handle(function(db, collection){
+database.withCollection(config, handle(function(collection){
   async.forEach(config.userIds, function(userId, done){
     instagram.getUserMedia(userId, {count: 1000}, handle(function(resultSet){
       if (resultSet.hasOwnProperty('data')) {
@@ -23,6 +23,6 @@ database.withCollection(config, handle(function(db, collection){
       }
     }));
   }, function(){
-    db.close();
+    collection.db.close();
   });
 }));
