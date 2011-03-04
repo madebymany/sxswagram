@@ -119,8 +119,26 @@ var UI = {
       $('html,body').animate({scrollTop: $("#updates").offset().top - 20},'slow');
     });
   },
+	
+	requestMore: function(timestamp){
+		UI.socket.send('["more", '+timestamp+']'); // TODO: how do you *generate* JSON in jQuery?
+	},
 
-  receivedData: function(data){
+  receivedMessage: function(m){
+		console.log(m);
+	  var data = m[1];
+		switch (m[0]) {
+			case 'start':
+				// TODO: initial fill
+				break;
+		  case 'new':
+				// TODO: add to pool of new updates
+				break;
+			case 'more':
+				// TODO: fill up infinite scroll
+				break;
+		}
+		/*
     for (var i = 0; i < data.length; i++) {
       var un = data[i].username;
       if (UI.updates[un]) {
@@ -130,6 +148,7 @@ var UI = {
       }
       UI.template.render(UI.updates[un]);
     }
+		*/
     UI.meta($('.update ul'));
   },
 
@@ -138,6 +157,7 @@ var UI = {
     var RETRY_INTERVAL = 10000;
 
     var socket = new io.Socket();
+		UI.socket = socket;
 
     var retryConnection = function(){
       setTimeout(function(){
@@ -161,8 +181,8 @@ var UI = {
       setTimeout(UI.connectToSocket, 5000);
     });
 
-    socket.on('message', function(m){
-      UI.receivedData($.parseJSON(m));
+    socket.on('message', function(raw){
+      UI.receivedMessage($.parseJSON(raw));
     });
 
     socket.connect();
