@@ -1,5 +1,4 @@
 var sys          = require('sys'),
-    async        = require('async'),
     config       = require('./config/config').config,
     instagram    = require('./lib/instagram').
                      createClient(config.clientId, config.accessToken),
