@@ -4,7 +4,14 @@ body {
   position:relative;
   font-family: Georgia, Times, serif;
 }
-
+hr {
+  border:0;
+  height:0;
+  width:0;
+  clear:both;
+  margin:0;
+  padding:0;
+}
 @media screen and (min-device-width: 750px)  {
   #header {
     margin:auto;
@@ -127,7 +134,7 @@ body {
 }
 
 #people {
-  overflow:hidden;
+  padding-top:20px;
   margin-right:-10px;
 }
 article {
@@ -262,6 +269,13 @@ article {
   background: #000;
   background: -moz-radial-gradient(50% 50%, farthest-side, rgba(0,0,0,.6), rgba(0,0,0,.9));
   background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(rgba(0,0,0,.6)), to(rgba(0,0,0,.9)));
+  -webkit-transition: opacity .4s linear;
+}
+.person .latest {
+  left: -20px;
+  position: absolute;
+  top: -27px;
+  -webkit-transition: opacity .4s linear;
 }
 .person li {
   text-align:center;
@@ -414,7 +428,8 @@ article {
     width:320px;
     margin:0 auto;
     position:relative;
-    top:-100px;
+    top:-120px;
+    overflow:hidden;
   }
 }
 

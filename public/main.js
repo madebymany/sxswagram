@@ -70,23 +70,40 @@ var UI = {
 
   meta : function (el) {
     el.each(function(){
-      $('li', this).each(function(){
+      var meta = $(this).css('opacity',0).show(),
+          h = meta.height(),
+          ih = 0;
+      $('li', meta).each(function(){
         var item = $(this),
             no_whitespace = item.text().replace(/^\s*|\s*$/g,'');
         if (no_whitespace.length == 0) {
           item.text('');
         }
+        ih = ih + item.height();
       });
-      $(this).css('opacity',0).show();
+      $('li:first', meta).css('margin-top', (h - ih) / 2);
     });
     
-    el.parent().hover(function(){
-      var this_el = $('ul',this);
-      this_el.animate({'opacity':1},{queue:false});
+    var parent = el.parent();
+    
+    parent.hover(function(){
+      show_it($('ul',this),$('.latest',this));
     }, function(){
-      var this_el = $('ul',this);
-      this_el.animate({'opacity':0},{queue:false});
+      hide_it($('ul',this));
     });
+    
+    
+    function show_it (el,latest) {
+      latest.fadeOut(450, function(){ $(this).remove(); });
+      el.animate({'opacity':1},{queue:false});
+    }
+    function hide_it (el) {
+      el.animate({'opacity':0},{queue:false});
+    }
+  },
+
+  highlightlatestPosts : function (li){
+    li.prepend('<img src=/images/latest_post.png class=latest>');
   },
 
   loadMore : function () {
@@ -115,6 +132,7 @@ var UI = {
     
     // Initiate loading new posts on click
     new_text.click(function(){
+      UI.highlightlatestPosts($('.person:lt(4)'));
       $(this).parent().animate({height:0});
       $('html,body').animate({scrollTop: $("#people").offset().top - 20},'slow');
     });
