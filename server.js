@@ -1,24 +1,26 @@
-var POLL_INTERVAL_NORMAL = 60 * 1000,
-    POLL_INTERVAL_ERROR  = 5 * POLL_INTERVAL_NORMAL;
-
 var sys          = require('sys'),
     async        = require('async'),
     config       = require('./config/config.js'),
     instagram    = require('./lib/instagram').
                      createClient(config.clientId, config.accessToken),
+    errorHandler = require('./lib/errorhandler'),
     people       = require('./lib/person').
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
                      createServer(config.port, __dirname + '/public'),
-    pollInterval = POLL_INTERVAL_NORMAL,
+    pollInterval = config.pollInterval.normal,
     bulkData     = '[]';
 
-var log = function(m) {
-  sys.log(m);
-  if (typeof m.stack !== 'undefined') {
-    console.log(m.stack);
+var printErr = function(err){
+  sys.log(err);
+  if (typeof err.stack !== 'undefined') {
+    console.log(err.stack);
   }
 };
+
+var handle = errorHandler.handler(function(err){
+  printErr(err);
+});
 
 server.get('/all.json', function(req, res){
   res.header('Content-Type', 'application/json');
@@ -36,10 +38,9 @@ server.socket.on('connection', function(client){
 var regenerateBulkData = function(){
   async.map(people, function(item, done){
     done(null, item.lastUpdate);
-  }, function(err, results){
-    if (err) { log(err); }
-    else { bulkData = JSON.stringify(results); }
-  });
+  }, handle(function(results){
+    bulkData = JSON.stringify(results);
+  }));
 };
 
 var updated = function(person){
@@ -55,17 +56,15 @@ var poll = function(){
   async.forEach(people, function(person, done){
     person.getLatestUpdate(instagram, function(err, res){
       if (err) {
-        pollInterval = POLL_INTERVAL_ERROR;
-        log(err);
+        pollInterval = config.pollInterval.error;
+        printErr(err);
       } else {
-        pollInterval = POLL_INTERVAL_NORMAL;
+        pollInterval = config.pollInterval.normal;
         if (res) { updated(res); }
       }
       done();
     });
-  }, function(err){
-    if (err) { log(err); }
-  });
+  }, handle());
 };
 
 poll();

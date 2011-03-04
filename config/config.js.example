@@ -20,4 +20,8 @@ exports.clientId     = TODO;
 exports.clientSecret = TODO;
 exports.accessToken  = TODO;
 exports.port         = 4500;
+exports.pollInterval = {
+  normal: 60 * 1000,
+  error:  5 * 60 * 1000
+}
 exports.userIds      = [TODO];

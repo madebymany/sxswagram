@@ -3,7 +3,7 @@
 ## Prerequisites
 
 * `node` 0.4.1 + `npm`
-* `npm install socket.io express async`
+* `npm install socket.io express async mongodb`
 
 ## Configuration
 
