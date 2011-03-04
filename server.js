@@ -10,7 +10,7 @@ var sys          = require('sys'),
     server       = require('./lib/pushserver').
                      createServer(config.port, __dirname + '/public'),
     pollInterval = config.pollInterval.normal,
-    bulkData     = '[]';
+    cachedInitialUpdates = null;
 
 var printErr = function(err){
   sys.log(err);
@@ -35,7 +35,7 @@ var main = function(dbCollection){
       person.setMinId(n);
       var poll = function(){
         console.log('polling '+person.userId);
-        person.getLatestUpdate(instagram, function(err, res){
+        person.getLatestUpdates(instagram, function(err, res){
           if (err) {
             pollInterval = config.pollInterval.error;
             printErr(err);
@@ -56,6 +56,7 @@ var main = function(dbCollection){
   //
   var updateReceived = function(update){
     console.log('received update for '+update.user.id);
+    cachedInitialUpdates = null;
     dbCollection.insert(update, handle());
     server.clientPool.broadcast(JSON.stringify(['new', [update]]));
   };
@@ -67,17 +68,24 @@ var main = function(dbCollection){
   //   - send starting batch (latest)
   //
   var sendUpdates = function(client, timestamp){
-    var criteria, header;
-    if (timestamp) {
-      criteria = {created_time: {$lt: timestamp}};
-      header = 'more';
-    } else {
-      criteria = {};
-      header = 'start';
-    }
+    var criteria = {created_time: {$lt: timestamp}};
     dbCollection.getUpdates(criteria, config.chunkSize, handle(function(data){
-      client.send(JSON.stringify([header, data]));
+      client.send(JSON.stringify(['more', data]));
     }));
+  };
+
+  var sendInitialUpdates = function(client){
+    var send = function(data){
+      client.send(JSON.stringify(['start', data]));
+    };
+    if (cachedInitialUpdates) {
+      send(cachedInitialUpdates);
+    } else {
+      dbCollection.getUpdates({}, config.chunkSize, handle(function(data){
+        cachedInitialUpdates = data;
+        send(data);
+      }));
+    }
   };
 
   // On socket connection:
@@ -99,7 +107,7 @@ var main = function(dbCollection){
           break;
       }
     });
-    sendUpdates(client);
+    sendInitialUpdates(client);
   });
 };
 
