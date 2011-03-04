@@ -57,7 +57,7 @@ var main = function(dbCollection){
   var updateReceived = function(update){
     console.log('received update for '+update.user.id);
     dbCollection.insert(update, handle());
-    server.clientPool.broadcast(JSON.stringify(['new', [person.lastUpdate]]));
+    server.clientPool.broadcast(JSON.stringify(['new', [update]]));
   };
 
   // On request for new data:
@@ -75,9 +75,9 @@ var main = function(dbCollection){
       criteria = {};
       header = 'start';
     }
-    dbCollection.getUpdates(criteria, config.chunkSize, handle(function(data)){
+    dbCollection.getUpdates(criteria, config.chunkSize, handle(function(data){
       client.send(JSON.stringify([header, data]));
-    });
+    }));
   };
 
   // On socket connection:
