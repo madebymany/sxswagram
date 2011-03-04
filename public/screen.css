@@ -126,7 +126,7 @@ body {
   padding:0 3px;
 }
 
-#people {
+#updates {
   overflow:hidden;
   margin-right:-10px;
 }
@@ -180,7 +180,7 @@ article {
   height:21px;
   line-height:21px;
 }
-.person {
+.update {
   width:312px;
   height:310px;
   float:left;
@@ -188,7 +188,7 @@ article {
   margin-bottom:10px;
   position:relative;
 }
-.person .overlay {
+.update .overlay {
   width:302px;
   height:302px;
   position:absolute;
@@ -197,17 +197,17 @@ article {
   background: url('/images/mask1.png');
   z-index:11;
 }
-.person:nth-child(4n+1) .overlay {
+.update:nth-child(4n+1) .overlay {
   background: url('/images/mask2.png');
 }
-.person:nth-child(4n+2) .overlay {
+.update:nth-child(4n+2) .overlay {
   background: url('/images/mask3.png');
 }
-.person:nth-child(4n+3) .overlay {
+.update:nth-child(4n+3) .overlay {
   background: url('/images/mask4.png');
 }
-.person .placeholder,
-.person ul {
+.update .placeholder,
+.update ul {
   width:288px;
   height:288px;
   position:absolute;
@@ -220,14 +220,14 @@ article {
   -webkit-border-radius:14px;
   overflow:hidden;
 }
-.person .placeholder img {
+.update .placeholder img {
   display:block;
   width:312px;
   margin:-12px 0 0 -12px;
   -moz-border-radius:14px;
   -webkit-border-radius:14px;
 }
-.person .avatar {
+.update .avatar {
   width:58px;
   height:58px;
   padding:1px;
@@ -238,11 +238,11 @@ article {
   background:#fff;
   border:1px solid #999;
 }
-.person .avatar img {
+.update .avatar img {
   width:58px;
   height:58px;
 }
-.person cite {
+.update cite {
   position:absolute;
   bottom:-5px;
   left:0;
@@ -252,7 +252,7 @@ article {
   z-index:14;
   display:block;
 }
-.person ul {
+.update ul {
   display:none;
   width:291px;
   height:289px;
@@ -263,28 +263,28 @@ article {
   background: -moz-radial-gradient(50% 50%, farthest-side, rgba(0,0,0,.6), rgba(0,0,0,.9));
   background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(rgba(0,0,0,.6)), to(rgba(0,0,0,.9)));
 }
-.person li {
+.update li {
   text-align:center;
   overflow:hidden;
   min-height:30px;
   margin: 0 30px 5px;
 }
-.person .caption {
+.update .caption {
   font-size: 20px;
   font-weight:bold;
   margin-top:90px;
   line-height:1.2;
 }
-.person ul span {
+.update ul span {
   display:inline-block;
   vertical-align:middle;
 
 }
-.person li img {
+.update li img {
   vertical-align:middle;
   margin-right:5px;
 }
-.person .location span {
+.update .location span {
 
 }
 
@@ -312,7 +312,7 @@ article {
 .iPad.portrait #load_new {
   width:100%;
 }
-.iPad.portrait #people {
+.iPad.portrait #updates {
   width:645px;
   margin:0 auto;
 }
@@ -410,7 +410,7 @@ article {
     vertical-align:middle;
     background: url('/images/mini_instagram.png') no-repeat;
   }
-  #people {
+  #updates {
     width:320px;
     margin:0 auto;
     position:relative;
