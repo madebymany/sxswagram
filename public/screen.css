@@ -1,15 +1,16 @@
+body {
+  background: url('/images/bg.gif');
+  width:100%;
+  position:relative;
+  font-family: Georgia, Times, serif;
+}
+
 @media screen and (min-device-width: 750px)  {
-  body {
-    background: url('/images/bg.gif');
-    width:100%;
-    position:relative;
-    font-family: Georgia, Times, serif;
-  }
   #header {
     margin:auto;
     height:412px;
     width:100%;
-    background: url('/images/header_bg.gif') 50% 0 repeat-x;
+    background: url('/images/header_bg.gif') 50% 100% repeat-x;
   }
   #header .bg {
     position:absolute;
@@ -22,42 +23,6 @@
     position:absolute;
     top:20px;
     left:0;
-  }
-  #header nav {
-    position:relative;
-    margin: auto;
-    padding:20px 0 40px;
-    width:960px;
-    height:13px;
-    background: url('/images/nav.gif') repeat-x 0 100%;
-    z-index:10;
-  }
-  #header nav ul {
-    float:right;
-    text-transform: uppercase;
-    font-size:12px;
-  }
-  #header nav li {
-    float:left;
-    padding:10px 9px 10px 10px;
-    background: url('/images/nav_li.gif') no-repeat 100% 50%;
-  }
-  #header nav li:last-child {
-    padding-right:0;
-    background:none;
-    line-height: 13px;
-  }
-  #header nav li a {
-    line-height: 13px;
-    display:inline-block;
-    color:#fff;
-    text-decoration:none;
-  }
-  #header nav li span {
-    line-height: 13px;
-    display:inline-block;
-    background:red;
-    padding:0 3px;
   }
   article {
     width:960px;
@@ -96,28 +61,71 @@
   }
   #time {
     font-weight:bold;
-    font-size:31px;
+    font-size:15px;
     color:#fff;
-    margin-top:15px;
+    margin-top:10px;
+    text-align:right;
   }
   #time time {
     color:#ebd40f;
-    min-width:138px;
+    min-width:65px;
     display:inline-block;
     text-align:left;
   }
   #instagram {
-    width:151px;
-    height:121px;
+    width:100%;
     display:block;
-    position:absolute;
-    bottom:-32px;
-    right:-17px;
-    overflow:hidden;
-    text-indent:-1000em;
-    background: url('/images/instagram.png') no-repeat;
+    color:#ebd40f;
+    text-decoration:none;
+    margin-top:20px;
+    font-weight:bold;
+  }
+  #instagram span {
+    position:static;
+    width:83px;
+    height:30px;
+    display:inline-block;
+    vertical-align:middle;
+    background: url('/images/mini_instagram.png') no-repeat;
+    margin:0;
   }
 }
+#header nav {
+  position:relative;
+  margin: auto;
+  padding:20px 0 40px;
+  width:960px;
+  height:13px;
+  z-index:10;
+}
+#header nav ul {
+  float:right;
+  text-transform: uppercase;
+  font-size:12px;
+}
+#header nav li {
+  float:left;
+  padding:10px 9px 10px 10px;
+  background: url('/images/nav_li.gif') no-repeat 100% 50%;
+}
+#header nav li:last-child {
+  padding-right:0;
+  background:none;
+  line-height: 13px;
+}
+#header nav li a {
+  line-height: 13px;
+  display:inline-block;
+  color:#fff;
+  text-decoration:none;
+}
+#header nav li span {
+  line-height: 13px;
+  display:inline-block;
+  background:red;
+  padding:0 3px;
+}
+
 #people {
   overflow:hidden;
   margin-right:-10px;
@@ -125,7 +133,7 @@
 article {
   padding-bottom:100px;
 }
-.load_more {
+#load_more {
   background: url('/images/load_more.gif');
   text-align:center;
   overflow:hidden;
@@ -134,7 +142,7 @@ article {
   line-height:36px;
   margin:10px auto;
 }
-.load_new {
+#load_new {
   height:0;
   width:100%;
   background: url('/images/load_new.png') repeat-x 50% 0;
@@ -143,6 +151,7 @@ article {
   left:0;
   z-index:20;
   text-align:center;
+  overflow:hidden;
 }
 #new_text {
   display:0;
@@ -250,6 +259,7 @@ article {
   left:12px;
   top:9px;
   color:#fff;
+  background: #000;
   background: -moz-radial-gradient(50% 50%, farthest-side, rgba(0,0,0,.6), rgba(0,0,0,.9));
   background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(rgba(0,0,0,.6)), to(rgba(0,0,0,.9)));
 }
@@ -277,9 +287,134 @@ article {
 .person .location span {
 
 }
-@media screen and (max-device-width: 480px)  {
-  html body {
-    background:red;
+
+.iPad.portrait #header {
+  width:100%;
+  height:320px;
+}
+.iPad.portrait #header nav,
+.iPad.portrait article,
+.iPad.portrait article header,
+.iPad.portrait .bg img {
+  width:720px;
+}
+.iPad.portrait .bg {
+  padding-top:30px;
+}
+.iPad.portrait article header span {
+  margin-top:-20px;
+  margin-bottom:10px;
+}
+.iPad.portrait article #mxm {
+  top:-60px;
+  left:20px;
+}
+.iPad.portrait #load_new {
+  width:100%;
+}
+.iPad.portrait #people {
+  width:645px;
+  margin:0 auto;
+}
+
+
+@media screen and (max-device-width: 320px)  {
+  #header, article, #header .bg, #load_new {
+    width:100%;
+  }
+  #header {
+    height:230px
+  }
+  #header .bg {
+    overflow:hidden;
+    height:230px !important;
+    position:absolute;
+    top:0;
+    left:0;
+  }
+  #header .bg img {
+    position:absolute;
+    bottom:0;
+    left:-100px;
+    width:700px;
+  }
+  #header nav {
+    width:100%;
+    position:absolute;
+    top:180px;
+    height:30px;
+    padding:0;
+    overflow:hidden;
+  }
+  #header nav ul {
+    float:none;
+    text-align:center;
+  }
+  .portrait #header nav ul {
+    margin:0 0 0 15px;
+  }
+  #header nav li {
+    display:inline-block;
+    padding:10px 6px;
+  }
+  #header nav a {
+    color:#fff;
+  }
+  .portrait nav li:nth-child(2), .portrait nav li:nth-child(3)/*, .portrait nav li:nth-child(5)*/ {
+    display:none !important;
+  }
+  #strapline {
+    font-size:13px;
+  }
+  #time { display:none; }
+  article header {
+    position:relative;
+    top:-200px;
+    color:#fff;
+    text-align:center;
+  }
+  h1 {
+    width:264px;
+    margin: auto;
+  }
+  article header span {
+    display:block;
+    width:264px;
+    height:58px;
+    text-indent:-1000em;
+    overflow:hidden;
+    background: url('/images/mini_goes_southwest.png') no-repeat 50% 0;
+    position:relative;
+    top:-15px;
+  }
+  article header #mxm {
+    background: url('/images/mxm.png') no-repeat;
+    width:67px;
+    height:29px;
+    top:0;
+    left:-10px;
+  }
+  #strapline {
+    margin-bottom:10px;
+  }
+  #instagram {
+    color:#ebd40f;
+    text-decoration:none;
+    font-size:14px;
+  }
+  #instagram span {
+    position:static;
+    width:83px;
+    height:30px;
+    display:inline-block;
+    vertical-align:middle;
+    background: url('/images/mini_instagram.png') no-repeat;
+  }
+  #people {
+    width:320px;
+    margin:0 auto;
+    position:relative;
+    top:-100px;
   }
 }
 

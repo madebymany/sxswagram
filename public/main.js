@@ -91,7 +91,7 @@ var UI = {
 
   loadMore : function () {
     var win = $(window),
-        load_more = $('.load_more').hide();
+        load_more = $('#load_more').hide();
     // fire when user scrolls to the bottom of the page.
     win.scroll(function(){
       if  (win.scrollTop() == $(document).height() - win.height()){
@@ -103,15 +103,17 @@ var UI = {
 
   loadOlder :function () {
     // go get older posts
+    t = setTimeout("$('#load_more').fadeOut();",2000);
+    
   },
 
   loadNew : function () {
-    var load_new = $('.load_new'),
+    var load_new = $('#load_new'),
         new_text = $('#new_text');
     
     load_new.animate({height:73});
     
-    // Initiate new images on click
+    // Initiate loading new posts on click
     new_text.click(function(){
       $(this).parent().animate({height:0});
       $('html,body').animate({scrollTop: $("#people").offset().top - 20},'slow');
@@ -128,7 +130,6 @@ var UI = {
       }
       UI.template.render(UI.people[un]);
     }
-    //UI.applyAgeEffect();
     UI.meta($('.person ul'));
   },
 
@@ -168,21 +169,27 @@ var UI = {
     retryConnection();
   },
 
-  applyAgeEffect: function(){
-    var now = new Date().getTime() / 1000;
-    $('.person .overlay').each(function(i, el){
-      var age = now - el.getAttribute('data-timestamp');
-      if (age < 0) { age = 0; }
-      opacity = (age / 3600) * 0.1;
-      if (opacity > 0.4) { opacity = 0.4; }
-      $(el).css('opacity', opacity);
-    });
-  },
-
   repeating: function(){
     setTimeout(UI.repeating, 60000);
-    //UI.applyAgeEffect();
     UI.meta($('.person ul'));
+  },
+
+  iDevice : {
+    start : function () {
+      var device = (UI.isiPad) ? 'iPad' : 'iPhone';
+      $('body').addClass('portrait ' + device);
+      this.setOrientation();
+      window.onorientationchange = this.setOrientation;
+    },
+    setOrientation : function () {
+      var body = $('body');
+      if ( orientation == 0 || orientation == 180 ) {
+        body.addClass('portrait').removeClass('landscape');
+      }
+      else if ( orientation == 90 || orientation == -90 ) {
+        body.addClass('landscape').removeClass('portrait');
+      }
+    }
   },
 
   start: function(){
@@ -193,6 +200,17 @@ var UI = {
     UI.meta($('.person ul'));
     UI.loadMore();
     UI.loadNew();
+    //test for iPad/iPhone
+    UI.isiPad    = navigator.userAgent.match(/iPad/i) != null;
+    UI.isiPhone  = navigator.userAgent.match(/iPhone/i) != null;
+    
+    if (UI.isiPad||UI.isiPhone) { UI.iDevice.start(); }
+    if (UI.isiPhone) {
+      addEventListener("load", function() {
+        setTimeout('window.scrollTo(0, 1)', 0);
+      }, false);
+    }
+    
   }
 };
 

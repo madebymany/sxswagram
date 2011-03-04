@@ -8,6 +8,9 @@
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0;">
+    <link href="//madebymany.com/images/favicon.ico" rel="shortcut icon">
+    <link href="//madebymany.com/images/iPhoneIcon.png" rel="apple-touch-icon">
 </head>
 <body>
   <header id=header>
@@ -28,8 +31,8 @@
     <header>
       <h1><span id=mxm>Made by Many</span> <span>Goes Southwest</span></h1>
       <p id=strapline>We’re in Austin for SXSW. Here’s what we’re up to…</p>
+      <a id=instagram href="http://instagram.com">Powered by <span>Instagram</span></a>
       <p id=time>Local time: <time></time></p>
-      <a id=instagram href="http://instagram.com">Instagram</a>
     </header>
     <ul id=people>
       <script id=person_template type=text/html>
@@ -44,10 +47,9 @@
           <cite><img src=/images/name_{{username}}.png></cite>
       </script>
     </ul>
-    <p class=load_more>Loading older Instagrams...</p>
-    <p class=load_new><span id="new_text">We have <span id=new_count>4</span> new images! Click here to refresh</span></p>
+    <p id=load_more>Loading older Instagrams...</p>
+    <p id=load_new><span id="new_text">We have <span id=new_count>4</span> new images! Click here to refresh</span></p>
   </article>
-  <script src=//yandex.st/modernizr/1.7/modernizr.min.js></script>
   <script src=//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js></script>
   <script src=//cdn.socket.io/stable/socket.io.js></script>
   <script src=https://github.com/janl/mustache.js/raw/0.3.0/mustache.js></script>
