@@ -18,9 +18,15 @@ var printErr = function(err){
   }
 };
 
-var handle = errorHandler.handler(function(err){
+var E = errorHandler.handler(function(err){
   printErr(err);
 });
+
+var objForEach = function(o, fn){
+  Object.keys(o).forEach(function(k){
+    fn(k, o[k]);
+  });
+};
 
 var main = function(dbCollection){
 
@@ -28,9 +34,8 @@ var main = function(dbCollection){
   // on response:
   //   - start polling for person.
   //
-  Object.keys(people).forEach(function(userId){
-    var person = people[userId];
-    dbCollection.getLatestUpdateId(person.userId, handle(function(n){
+  objForEach(function(_, person){
+    dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
       var poll = function(){
         console.log('polling '+person.userId);
@@ -56,23 +61,21 @@ var main = function(dbCollection){
   var updateReceived = function(update){
     console.log('received update for '+update.user.id);
     cachedInitialUpdates = null;
-    dbCollection.insert(update, handle());
+    dbCollection.insert(update, E());
     server.clientPool.broadcast(JSON.stringify(['new', [update]]));
   };
 
-  // On request for new data:
-  // if timestamp given:
-  //   - send batch before timestamp
-  // else:
-  //   - send starting batch (latest)
+  // Send client a batch of the latest N updates before timestamp
   //
   var sendUpdates = function(client, timestamp){
     var criteria = {created_time: {$lt: timestamp}};
-    dbCollection.getUpdates(criteria, config.chunkSize, handle(function(data){
+    dbCollection.getUpdates(criteria, config.chunkSize, E(function(data){
       client.send(JSON.stringify(['more', data]));
     }));
   };
 
+  // Send client a starting batch of the latest N updates
+  //
   var sendInitialUpdates = function(client){
     var send = function(data){
       client.send(JSON.stringify(['start', data]));
@@ -80,7 +83,7 @@ var main = function(dbCollection){
     if (cachedInitialUpdates) {
       send(cachedInitialUpdates);
     } else {
-      dbCollection.getUpdates({}, config.chunkSize, handle(function(data){
+      dbCollection.getUpdates({}, config.chunkSize, E(function(data){
         cachedInitialUpdates = data;
         send(data);
       }));
@@ -110,6 +113,6 @@ var main = function(dbCollection){
   });
 };
 
-database.withCollection(config, handle(function(collection){
+database.withCollection(config, E(function(collection){
   main(collection);
 }));
