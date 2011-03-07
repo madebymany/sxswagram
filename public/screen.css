@@ -161,7 +161,6 @@ article {
   overflow:hidden;
 }
 #new_text {
-  display:0;
   position:relative;
   display:block;
   width:480px;
@@ -187,6 +186,7 @@ article {
   height:21px;
   line-height:21px;
 }
+
 .update {
   width:312px;
   height:310px;

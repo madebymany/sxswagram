@@ -1,20 +1,18 @@
 var Update = function(data){
-  this.update(data);
-  this.username = data.username;
-  this.elementId = data.username;
+  this.data = data;
 };
 
 Update.prototype.forTemplate = function(){
   var d = this.data;
   d.location_name = (d.location) ? d.location.name : null;
+  d.created_at = d.created_time;
   d.image_url = d.images.low_resolution.url;
-  d.element_id = this.elementId;
-  d.angle = Math.floor(Math.random() * 6);
+  d.element_id = d.id;
+  d.username = d.user.username;
+  d.profile_picture = d.user.profile_picture;
+  d.caption_text = d.caption ? d.caption.text : null;
+  if (d.tags.length > 0) { d.tags = d.tags.join(' '); }
   return d;
-};
-
-Update.prototype.update = function(data){
-  this.data = data;
 };
 
 var Template = function(name){
@@ -24,18 +22,22 @@ var Template = function(name){
   script.remove();
 };
 
-Template.prototype.render = function(obj){
-  var html = Mustache.to_html(this.template, obj.forTemplate());
-  var element = $('#'+ obj.elementId);
-  if (element.length > 0) {
-    element.replaceWith(html);
-  } else {
-    this.container.append(html);
-  }
+Template.prototype.render = function(obj,type){
+  var html = $(Mustache.to_html(this.template, obj.forTemplate())).hide();
+  if (type == 'new') { html.prepend('<img src=/images/latest_post.png class=latest>'); }
+  (type == 'new') ? this.container.prepend(html) : this.container.append(html);
+  html.fadeIn();
+  UI.meta($('ul',html));
+  if (!UI.iPhone) { $('#load_more').hide(); }
 };
 
 var UI = {
-  updates: {},
+
+  //test for iPad/iPhone
+  isiPad:   navigator.userAgent.match(/iPad/i) != null,
+  isiPhone: navigator.userAgent.match(/iPhone/i) != null,
+
+  updates : [],
 
   localTime : {
     start : function () {
@@ -92,7 +94,6 @@ var UI = {
       hide_it($('ul',this));
     });
     
-    
     function show_it (el,latest) {
       latest.fadeOut(450, function(){ $(this).remove(); });
       el.animate({'opacity':1},{queue:false});
@@ -102,72 +103,66 @@ var UI = {
     }
   },
 
-  highlightlatestPosts : function (li){
-    li.prepend('<img src=/images/latest_post.png class=latest>');
-  },
-
-  loadMore : function () {
-    var win = $(window),
-        load_more = $('#load_more').hide();
-    // fire when user scrolls to the bottom of the page.
-    win.scroll(function(){
-      if  (win.scrollTop() == $(document).height() - win.height()){
-        load_more.show();
-        UI.loadOlder();
-      }
-    });
-  },
-
-  loadOlder :function () {
-    // go get older posts
-    t = setTimeout("$('#load_more').fadeOut();",2000);
-    
-  },
-
   loadNew : function () {
-    var load_new = $('#load_new'),
-        new_text = $('#new_text');
-    
-    load_new.animate({height:73});
-    
-    // Initiate loading new posts on click
-    new_text.click(function(){
-      UI.highlightlatestPosts($('.update:lt(4)'));
-      $(this).parent().animate({height:0});
+    $('#new_text').click(function(){
       $('html,body').animate({scrollTop: $("#updates").offset().top - 20},'slow');
+      for (i = 0; i < UI.updates.length; i++) {
+        UI.template.render(new Update(UI.updates[i]),'new');
+      }
+      UI.updates = [];
+      $(this).parent().animate({height:0});
     });
   },
-	
-	requestMore: function(timestamp){
-		UI.socket.send('["more", '+timestamp+']'); // TODO: how do you *generate* JSON in jQuery?
-	},
+
+  requestMoreUpdates : function () {
+    load_more = $('#load_more');
+    if (UI.iPhone) {
+      load_more.click(function(){
+        UI.requestMore();
+      });
+    } else {
+      load_more.hide();
+      var win = $(window);
+      win.scroll(function(){
+        if  (win.scrollTop() == $(document).height() - win.height()){
+          load_more.show();
+          UI.requestMore();
+        }
+      });
+    }
+  },
+
+  requestMore: function(timestamp){
+    timestamp = (typeof timestamp == 'undefined') ? $('.update:last').attr('data-timestamp') : timestamp;
+    UI.socket.send('["more", '+timestamp+']');
+  },
 
   receivedMessage: function(m){
-		console.log(m);
-	  var data = m[1];
-		switch (m[0]) {
-			case 'start':
-				// TODO: initial fill
-				break;
-		  case 'new':
-				// TODO: add to pool of new updates
-				break;
-			case 'more':
-				// TODO: fill up infinite scroll
-				break;
-		}
-		/*
-    for (var i = 0; i < data.length; i++) {
-      var un = data[i].username;
-      if (UI.updates[un]) {
-        UI.updates[un].update(data[i]);
-      } else {
-        UI.updates[un] = new Update(data[i]);
-      }
-      UI.template.render(UI.updates[un]);
+    var data = m[1],
+        i;
+    switch (m[0]) {
+      case 'start':
+        for (i = 0; i < data.length; i++) {
+          UI.template.render(new Update(data[i]),m[0]);
+        }
+        break;
+      case 'new':
+        UI.queueUpdates(data);
+        break;
+      case 'more':
+        for (i = 0; i < data.length; i++) {
+          UI.template.render(new Update(data[i]),m[0]);
+        }
+        break;
     }
-		*/
-    UI.meta($('.update ul'));
+  },
+
+  queueUpdates: function (data) {
+    for (i = 0; i < data.length; i++) {
+      UI.updates.push(data[i]);
+    }
+    $('#new_count').text(UI.updates.length);
+    $('#load_new').animate({height:73});
   },
 
   connectToSocket: function(){
@@ -175,7 +170,7 @@ var UI = {
     var RETRY_INTERVAL = 10000;
 
     var socket = new io.Socket();
-		UI.socket = socket;
+    UI.socket = socket;
 
     var retryConnection = function(){
       setTimeout(function(){
@@ -214,10 +209,16 @@ var UI = {
 
   iDevice : {
     start : function () {
-      var device = (UI.isiPad) ? 'iPad' : 'iPhone';
-      $('body').addClass('portrait ' + device);
+      $('body').addClass('portrait ' + (UI.isiPad) ? 'iPad' : 'iPhone');
+
       this.setOrientation();
       window.onorientationchange = this.setOrientation;
+
+      if (UI.isiPhone) {
+        addEventListener("load", function() {
+          setTimeout('window.scrollTo(0, 1)', 0);
+        }, false);
+      }
     },
     setOrientation : function () {
       var body = $('body');
@@ -235,19 +236,11 @@ var UI = {
     UI.template = new Template('update_template');
     UI.connectToSocket();
     UI.repeating();
-    UI.meta($('.update ul'));
-    UI.loadMore();
-    UI.loadNew();
-    //test for iPad/iPhone
-    UI.isiPad    = navigator.userAgent.match(/iPad/i) != null;
-    UI.isiPhone  = navigator.userAgent.match(/iPhone/i) != null;
     
+    UI.loadNew();
+    UI.requestMoreUpdates();
+
     if (UI.isiPad||UI.isiPhone) { UI.iDevice.start(); }
-    if (UI.isiPhone) {
-      addEventListener("load", function() {
-        setTimeout('window.scrollTo(0, 1)', 0);
-      }, false);
-    }
     
   }
 };

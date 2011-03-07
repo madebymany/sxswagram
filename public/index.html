@@ -36,8 +36,8 @@
     </header>
     <ul id=updates>
       <script id=update_template type=text/html>
-        <li id={{element_id}} class="update {{username}} angle_{{angle}}">
-          <div class=overlay data-timestamp={{created_at}}></div>
+        <li id="update_{{element_id}}" class="update {{username}} {{tags}}" data-timestamp={{created_at}}>
+          <div class=overlay></div>
           <span class=placeholder><img src={{image_url}} alt={{caption_text}}></span>
           <ul>
             <li class=caption><span><img src=/images/bubble.png> {{caption_text}}
@@ -48,8 +48,9 @@
       </script>
     </ul>
     <hr>
+    
     <p id=load_more>Loading older Instagrams...</p>
-    <p id=load_new><span id="new_text">We have <span id=new_count>4</span> new images! Click here to refresh</span></p>
+    <p id=load_new><span id=new_text>We have <span id=new_count>0</span> new images! Click here to refresh</span></p>
   </article>
   <script src=/modernizr-1.7.min.js></script>
   <script src=//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js></script>
