@@ -2,7 +2,8 @@
 
 ## Prerequisites
 
-* `node` 0.4.1 + `npm`
+* Node.js 0.4.1 + npm
+* MongoDB
 * `npm install socket.io express async mongodb`
 
 ## Configuration
@@ -36,6 +37,12 @@ Search by name:
     curl 'https://api.instagram.com/v1/users/search?client_id=_CLIENT_ID_&q=_NAME_'
 
 ## Run it
+
+Before the first run:
+
+    node script/seed.js
+
+Then:
 
     node server.js
 
