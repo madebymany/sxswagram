@@ -24,6 +24,10 @@ exports.config = {
     normal: 60 * 1000,
     error: 5 * 60 * 1000
   },
+  atom: {
+    uri: 'http://madebymany.com/blog.atom',
+    pollInterval: 60 * 1000
+  },
   port: 4500,
   database: {
     name: 'sxswagram',

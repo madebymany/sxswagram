@@ -7,6 +7,8 @@ var config    = require('./config/config').config,
                   fromUserIds(config.userIds),
     server    = require('./lib/pushserver').
                   createServer(config.port, __dirname + '/public'),
+    atom      = require('./lib/atom'),
+    blog      = new atom.Feed(config.atom.url),
     cachedInitialUpdates = null;
 
 var E = util.errorHandler(function(err){
@@ -45,13 +47,38 @@ var main = function(dbCollection){
     }));
   });
 
+  // Find latest blog post time
+  // on response:
+  //   - start polling for blog posts
+  //
+  dbCollection.getLatestBlogPostTime(E(function(n){
+    blog.setMinTimestamp(n);
+    var poll = function(){
+      console.log('polling blog feed');
+      blog.getLatestPosts(E(function(post){
+        updateReceived(post);
+      }));
+      setTimeout(poll, config.atom.pollInterval);
+    };
+    poll();
+  }));
+
   // For each update received:
   //   - expire initial update cache
   //   - save to database
   //   - broadcast to all clients
   //
   var updateReceived = function(update){
-    console.log('received update for '+update.user.username);
+    switch (update.type) {
+      case 'image':
+        console.log('received update for ' + update.user.username);
+        break;
+      case 'blog':
+        console.log('found blog post ' + update.title);
+        break;
+      default:
+        console.log('unknown update ' + update.type);
+    }
     cachedInitialUpdates = null;
     dbCollection.insert(update, E());
     server.clientPool.broadcast(util.encodeMessage('new', [update]));
