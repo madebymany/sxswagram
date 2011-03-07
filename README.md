@@ -2,7 +2,8 @@
 
 ## Prerequisites
 
-* `node` 0.4.1 + `npm`
+* Node.js 0.4.1 + npm
+* MongoDB
 * `npm install socket.io express async mongodb`
 
 ## Configuration
@@ -37,6 +38,19 @@ Search by name:
 
 ## Run it
 
+Before the first run:
+
+    node script/seed.js
+
+Then:
+
     node server.js
 
 Visit whichever port you specified in `config.js`.
+
+## Re-seeding
+
+If necessary due to changes in storage format:
+
+    mongo --eval 'db.updates.drop()' _DB_NAME_
+    node script/seed.js

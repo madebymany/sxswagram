@@ -1,26 +1,16 @@
-var sys          = require('sys'),
-    async        = require('async'),
-    config       = require('./config/config').config,
-    instagram    = require('./lib/instagram').
-                     createClient(config.clientId, config.accessToken),
-    errorHandler = require('./lib/errorhandler'),
-    database     = require('./lib/database'),
-    people       = require('./lib/person').
-                     fromUserIds(config.userIds),
-    server       = require('./lib/pushserver').
-                     createServer(config.port, __dirname + '/public'),
-    pollInterval = config.pollInterval.normal,
-    bulkData     = '[]';
+var config    = require('./config/config').config,
+    instagram = require('./lib/instagram').
+                  createClient(config.clientId, config.accessToken),
+    util      = require('./lib/util'),
+    database  = require('./lib/database'),
+    people    = require('./lib/person').
+                  fromUserIds(config.userIds),
+    server    = require('./lib/pushserver').
+                  createServer(config.port, __dirname + '/public'),
+    cachedInitialUpdates = null;
 
-var printErr = function(err){
-  sys.log(err);
-  if (typeof err.stack !== 'undefined') {
-    console.log(err.stack);
-  }
-};
-
-var handle = errorHandler.handler(function(err){
-  printErr(err);
+var E = util.errorHandler(function(err){
+  util.printErr(err);
 });
 
 var main = function(dbCollection){
@@ -29,13 +19,13 @@ var main = function(dbCollection){
   // on response:
   //   - start polling for person.
   //
-  Object.keys(people).forEach(function(userId){
-    var person = people[userId];
-    dbCollection.getLatestUpdateId(person.userId, handle(function(n){
+  util.objForEach(function(_, person){
+    var pollInterval = config.pollInterval.normal;
+    dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
       var poll = function(){
         console.log('polling '+person.userId);
-        person.getLatestUpdate(instagram, function(err, res){
+        person.getLatestUpdates(instagram, function(err, res){
           if (err) {
             pollInterval = config.pollInterval.error;
             printErr(err);
@@ -44,6 +34,11 @@ var main = function(dbCollection){
             if (res) { updateReceived(res); }
           }
         });
+        // This will be reached before the success/failure is known. That's OK,
+        // because:
+        // 1) we want to poll again regardless of what happens; and
+        // 2) even if the next poll happens soon, over the long run we will
+        // back off and avoid hammering the API.
         setTimeout(poll, pollInterval);
       };
       poll();
@@ -51,32 +46,51 @@ var main = function(dbCollection){
   });
 
   // For each update received:
+  //   - expire initial update cache
   //   - save to database
   //   - broadcast to all clients
   //
   var updateReceived = function(update){
     console.log('received update for '+update.user.id);
-    dbCollection.insert(update, handle());
-    server.clientPool.broadcast(JSON.stringify(['new', [update]]));
+    cachedInitialUpdates = null;
+    dbCollection.insert(update, E());
+    server.clientPool.broadcast(util.encodeMessage('new', [update]));
   };
 
-  // On request for new data:
-  // if timestamp given:
-  //   - send batch before timestamp
-  // else:
-  //   - send starting batch (latest)
+  // Send client a batch of the latest N updates before timestamp
   //
   var sendUpdates = function(client, timestamp){
-    var criteria, header;
-    if (timestamp) {
-      criteria = {created_time: {$lt: timestamp}};
-      header = 'more';
+    var criteria = {created_time: {$lt: timestamp}};
+    dbCollection.getUpdates(criteria, config.chunkSize, E(function(data){
+      client.send(util.encodeMessage('more', data));
+    }));
+  };
+
+  // Send client a starting batch of the latest N updates
+  //
+  var sendInitialUpdates = function(client){
+    var send = function(data){
+      client.send(util.encodeMessage('start', data));
+    };
+    if (cachedInitialUpdates) {
+      send(cachedInitialUpdates);
     } else {
-      criteria = {};
-      header = 'start';
+      dbCollection.getUpdates({}, config.chunkSize, E(function(data){
+        cachedInitialUpdates = data;
+        send(data);
+      }));
     }
-    dbCollection.getUpdates(criteria, config.chunkSize, handle(function(data){
-      client.send(JSON.stringify([header, data]));
+  };
+
+  // Handle an incoming message
+  //
+  var receivedMessage = function(client, raw){
+    util.decodeMessage(raw, E(function(type, data){
+      switch (type) {
+        case 'more':
+          sendUpdates(client, data);
+          break;
+      }
     }));
   };
 
@@ -91,18 +105,13 @@ var main = function(dbCollection){
     client.on('disconnect', function(){
       server.clientPool.remove(client);
     });
-    client.on('message', function(m){
-      var message = JSON.parse(m);
-      switch (message[0]) {
-        case 'more':
-          sendUpdates(client, message[1]);
-          break;
-      }
+    client.on('message', function(raw){
+      receivedMessage(client, raw);
     });
-    sendUpdates(client);
+    sendInitialUpdates(client);
   });
 };
 
-database.withCollection(config, handle(function(collection){
+database.withCollection(config, E(function(collection){
   main(collection);
 }));
