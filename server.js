@@ -51,7 +51,7 @@ var main = function(dbCollection){
   //   - broadcast to all clients
   //
   var updateReceived = function(update){
-    console.log('received update for '+update.user.id);
+    console.log('received update for '+update.user.username);
     cachedInitialUpdates = null;
     dbCollection.insert(update, E());
     server.clientPool.broadcast(util.encodeMessage('new', [update]));
