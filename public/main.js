@@ -105,13 +105,20 @@ var UI = {
   },
 
   loadNew : function () {
+    $('#load_new').show();
     $('#new_text').click(function(){
       $('html,body').animate({scrollTop: $("#updates").offset().top - 20},'slow');
       for (i = 0; i < UI.updates.length; i++) {
         UI.template.render(new Update(UI.updates[i]),'new');
       }
       UI.updates = [];
-      $(this).parent().animate({height:0});
+      
+      if (UI.isiPhone||UI.isiPad) {
+        $(this).parent().animate({left:-94});
+      } else {
+        $(this).parent().animate({bottom:-73});
+      }
+      
     });
   },
 
@@ -168,7 +175,8 @@ var UI = {
     }
     $('#new_count').text(UI.updates.length);
     if (UI.isiPhone||UI.isiPad) {
-      $('#load_new').animate({left:0});
+      alert(window.pageYOffset);
+      $('#load_new').css('top',window.pageYOffset + 20).animate({left:0});
     } else {
       $('#load_new').animate({bottom:0});
     }
@@ -219,7 +227,7 @@ var UI = {
   iDevice : {
     start : function () {
       var device = (UI.isiPad) ? 'iPad' : 'iPhone';
-      $('body').addClass('portrait ' + device);
+      $('body').addClass('iDevice portrait' + device);
 
       this.setOrientation();
       window.onorientationchange = this.setOrientation;
