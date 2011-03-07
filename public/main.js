@@ -38,6 +38,7 @@ var UI = {
   isiPhone: navigator.userAgent.match(/iPhone/i) != null,
 
   updates : [],
+  loading : false,
 
   localTime : {
     start : function () {
@@ -125,8 +126,11 @@ var UI = {
       var win = $(window);
       win.scroll(function(){
         if  (win.scrollTop() == $(document).height() - win.height()){
-          load_more.css('visibility','visible');
-          UI.requestMore();
+          if (!UI.loading) {
+            UI.loading == true;
+            load_more.css('visibility','visible');
+            UI.requestMore();
+          }
         }
       });
     }
@@ -155,6 +159,7 @@ var UI = {
         }
         break;
     }
+    UI.loading == false;
   },
 
   queueUpdates: function (data) {
