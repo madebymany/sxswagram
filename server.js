@@ -48,6 +48,11 @@ var main = function(dbCollection){
             if (res) { updateReceived(res); }
           }
         });
+        // This will be reached before the success/failure is known. That's OK,
+        // because:
+        // 1) we want to poll again regardless of what happens; and
+        // 2) even if the next poll happens soon, over the long run we will
+        // back off and avoid hammering the API.
         setTimeout(poll, pollInterval);
       };
       poll();
