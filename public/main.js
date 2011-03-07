@@ -167,7 +167,7 @@ var UI = {
       UI.updates.push(data[i]);
     }
     $('#new_count').text(UI.updates.length);
-    if (isIphone) {
+    if (UI.isiPhone||UI.isiPad) {
       $('#load_new').animate({left:0});
     } else {
       $('#load_new').animate({bottom:0});
