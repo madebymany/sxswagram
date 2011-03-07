@@ -11,7 +11,7 @@ Update.prototype.forTemplate = function(){
   d.username = d.user.username;
   d.profile_picture = 'avatar_' + d.user.username + '.png';
   d.caption_text = d.caption ? d.caption.text : null;
-  if (d.tags.length > 0) { d.tags = d.tags.join(' '); }
+  d.tags = d.tags.join(' ');
   return d;
 };
 
@@ -167,7 +167,11 @@ var UI = {
       UI.updates.push(data[i]);
     }
     $('#new_count').text(UI.updates.length);
-    $('#load_new').animate({height:73});
+    if (isIphone) {
+      $('#load_new').animate({left:0});
+    } else {
+      $('#load_new').animate({bottom:0});
+    }
   },
 
   connectToSocket: function(){

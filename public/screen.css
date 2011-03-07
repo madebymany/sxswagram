@@ -154,7 +154,7 @@ article {
   width:100%;
   background: url('/images/load_new.png') repeat-x 50% 0;
   position:fixed;
-  bottom:0;
+  bottom:-73;
   left:0;
   z-index:20;
   text-align:center;
@@ -423,6 +423,34 @@ article {
     position:relative;
     margin-top:-120px;
     overflow:hidden;
+  }
+  #load_new {
+    background: url('/images/load_new_i.png') no-repeat;
+    position:fixed;
+    top:20px;
+    left: -94px;
+    width:94px;
+    height:87px;
+    z-index:20;
+  }
+  #new_text {
+    width:94px;
+    height:87px;
+    overflow:hidden;
+    text-indent:-10000em;
+    display:block;
+    cursor:pointer;
+  }
+  #new_count {
+    display:block;
+    text-indent:0;
+    color:#fff;
+    position: absolute;
+    top:21px;
+    right:17px;
+    width:28px;
+    height:28px;
+    text-align:center;
   }
 }
 
