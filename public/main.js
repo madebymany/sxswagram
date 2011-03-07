@@ -9,7 +9,7 @@ Update.prototype.forTemplate = function(){
   d.image_url = d.images.low_resolution.url;
   d.element_id = d.id;
   d.username = d.user.username;
-  d.profile_picture = d.user.profile_picture;
+  d.profile_picture = 'avatar_' + d.user.username + '.png';
   d.caption_text = d.caption ? d.caption.text : null;
   if (d.tags.length > 0) { d.tags = d.tags.join(' '); }
   return d;
@@ -28,7 +28,7 @@ Template.prototype.render = function(obj,type){
   (type == 'new') ? this.container.prepend(html) : this.container.append(html);
   html.fadeIn();
   UI.meta($('ul',html));
-  if (!UI.iPhone) { $('#load_more').hide(); }
+  if (!UI.isiPhone) { $('#load_more').css('visibility','hidden'); }
 };
 
 var UI = {
@@ -116,16 +116,16 @@ var UI = {
 
   requestMoreUpdates : function () {
     load_more = $('#load_more');
-    if (UI.iPhone) {
-      load_more.click(function(){
+    if (UI.isiPhone) {
+      load_more.text('Load older Instagrams').click(function(){
         UI.requestMore();
       });
     } else {
-      load_more.hide();
+      load_more.css('visibility','hidden').text('Loading older Instagrams...');
       var win = $(window);
       win.scroll(function(){
         if  (win.scrollTop() == $(document).height() - win.height()){
-          load_more.show();
+          load_more.css('visibility','visible');
           UI.requestMore();
         }
       });
@@ -209,7 +209,8 @@ var UI = {
 
   iDevice : {
     start : function () {
-      $('body').addClass('portrait ' + (UI.isiPad) ? 'iPad' : 'iPhone');
+      var device = (UI.isiPad) ? 'iPad' : 'iPhone';
+      $('body').addClass('portrait ' + device);
 
       this.setOrientation();
       window.onorientationchange = this.setOrientation;

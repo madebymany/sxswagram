@@ -235,19 +235,12 @@ article {
   -webkit-border-radius:14px;
 }
 .update .avatar {
-  width:58px;
-  height:58px;
-  padding:1px;
+  width:84px;
+  height:87px;
   display:block;
   position:absolute;
   right:0px;
   z-index:12;
-  background:#fff;
-  border:1px solid #999;
-}
-.update .avatar img {
-  width:58px;
-  height:58px;
 }
 .update cite {
   position:absolute;
@@ -428,7 +421,7 @@ article {
     width:320px;
     margin:0 auto;
     position:relative;
-    top:-120px;
+    margin-top:-120px;
     overflow:hidden;
   }
 }
