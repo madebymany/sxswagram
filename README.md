@@ -47,3 +47,10 @@ Then:
     node server.js
 
 Visit whichever port you specified in `config.js`.
+
+## Re-seeding
+
+If necessary due to changes in storage format:
+
+    mongo --eval 'db.updates.drop()' _DB_NAME_
+    node script/seed.js
