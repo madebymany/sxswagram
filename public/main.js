@@ -169,7 +169,7 @@ var UI = {
     var connected = false;
     var RETRY_INTERVAL = 10000;
 
-    var socket = new io.Socket();
+    var socket = new io.Socket(document.domain, {rememberTransport: false});
     UI.socket = socket;
 
     var retryConnection = function(){
