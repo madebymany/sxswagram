@@ -1,31 +1,17 @@
-var sys          = require('sys'),
-    config       = require('./config/config').config,
-    instagram    = require('./lib/instagram').
-                     createClient(config.clientId, config.accessToken),
-    errorHandler = require('./lib/errorhandler'),
-    database     = require('./lib/database'),
-    people       = require('./lib/person').
-                     fromUserIds(config.userIds),
-    server       = require('./lib/pushserver').
-                     createServer(config.port, __dirname + '/public'),
+var config    = require('./config/config').config,
+    instagram = require('./lib/instagram').
+                  createClient(config.clientId, config.accessToken),
+    util      = require('./lib/util'),
+    database  = require('./lib/database'),
+    people    = require('./lib/person').
+                  fromUserIds(config.userIds),
+    server    = require('./lib/pushserver').
+                  createServer(config.port, __dirname + '/public'),
     cachedInitialUpdates = null;
 
-var printErr = function(err){
-  sys.log(err);
-  if (typeof err.stack !== 'undefined') {
-    console.log(err.stack);
-  }
-};
-
-var E = errorHandler.handler(function(err){
-  printErr(err);
+var E = util.errorHandler(function(err){
+  util.printErr(err);
 });
-
-var objForEach = function(o, fn){
-  Object.keys(o).forEach(function(k){
-    fn(k, o[k]);
-  });
-};
 
 var main = function(dbCollection){
 
@@ -33,7 +19,7 @@ var main = function(dbCollection){
   // on response:
   //   - start polling for person.
   //
-  objForEach(function(_, person){
+  util.objForEach(function(_, person){
     var pollInterval = config.pollInterval.normal;
     dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
@@ -60,6 +46,7 @@ var main = function(dbCollection){
   });
 
   // For each update received:
+  //   - expire initial update cache
   //   - save to database
   //   - broadcast to all clients
   //
@@ -67,7 +54,7 @@ var main = function(dbCollection){
     console.log('received update for '+update.user.id);
     cachedInitialUpdates = null;
     dbCollection.insert(update, E());
-    server.clientPool.broadcast(JSON.stringify(['new', [update]]));
+    server.clientPool.broadcast(util.encodeMessage('new', [update]));
   };
 
   // Send client a batch of the latest N updates before timestamp
@@ -75,7 +62,7 @@ var main = function(dbCollection){
   var sendUpdates = function(client, timestamp){
     var criteria = {created_time: {$lt: timestamp}};
     dbCollection.getUpdates(criteria, config.chunkSize, E(function(data){
-      client.send(JSON.stringify(['more', data]));
+      client.send(util.encodeMessage('more', data));
     }));
   };
 
@@ -83,7 +70,7 @@ var main = function(dbCollection){
   //
   var sendInitialUpdates = function(client){
     var send = function(data){
-      client.send(JSON.stringify(['start', data]));
+      client.send(util.encodeMessage('start', data));
     };
     if (cachedInitialUpdates) {
       send(cachedInitialUpdates);
@@ -93,6 +80,18 @@ var main = function(dbCollection){
         send(data);
       }));
     }
+  };
+
+  // Handle an incoming message
+  //
+  var receivedMessage = function(client, raw){
+    util.decodeMessage(raw, E(function(type, data){
+      switch (type) {
+        case 'more':
+          sendUpdates(client, data);
+          break;
+      }
+    }));
   };
 
   // On socket connection:
@@ -106,13 +105,8 @@ var main = function(dbCollection){
     client.on('disconnect', function(){
       server.clientPool.remove(client);
     });
-    client.on('message', function(m){
-      var message = JSON.parse(m);
-      switch (message[0]) {
-        case 'more':
-          sendUpdates(client, message[1]);
-          break;
-      }
+    client.on('message', function(raw){
+      receivedMessage(client, raw);
     });
     sendInitialUpdates(client);
   });
