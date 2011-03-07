@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* Node.js 0.4.1 + npm
+* Node.js 0.4.2 + npm
 * MongoDB
 * `npm install socket.io express async mongodb`
 
