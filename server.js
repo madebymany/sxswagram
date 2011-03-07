@@ -19,7 +19,7 @@ var main = function(dbCollection){
   // on response:
   //   - start polling for person.
   //
-  util.objForEach(function(_, person){
+  util.objForEach(people, function(_, person){
     var pollInterval = config.pollInterval.normal;
     dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
