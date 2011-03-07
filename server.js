@@ -8,7 +8,6 @@ var sys          = require('sys'),
                      fromUserIds(config.userIds),
     server       = require('./lib/pushserver').
                      createServer(config.port, __dirname + '/public'),
-    pollInterval = config.pollInterval.normal,
     cachedInitialUpdates = null;
 
 var printErr = function(err){
@@ -35,6 +34,7 @@ var main = function(dbCollection){
   //   - start polling for person.
   //
   objForEach(function(_, person){
+    var pollInterval = config.pollInterval.normal;
     dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
       var poll = function(){
