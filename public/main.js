@@ -1,17 +1,23 @@
 var Update = function(data){
   this.data = data;
+  this.type = data.type;
 };
 
 Update.prototype.forTemplate = function(){
   var d = this.data;
-  d.location_name = (d.location) ? d.location.name : null;
-  d.created_at = d.created_time;
-  d.image_url = d.images.low_resolution.url;
-  d.element_id = d.id;
-  d.username = d.user.username;
-  d.profile_picture = 'avatar_' + d.user.username + '.png';
-  d.caption_text = d.caption ? d.caption.text : null;
-  d.tags = d.tags.join(' ');
+  switch (this.type) {
+    case 'image':
+      d.location_name = (d.location) ? d.location.name : null;
+      d.image_url = d.images.low_resolution.url;
+      d.element_id = d.id;
+      d.username = d.user.username;
+      d.profile_picture = 'avatar_' + d.user.username + '.png';
+      d.caption_text = d.caption ? d.caption.text : null;
+      d.tags = d.tags.join(' ');
+      break;
+    case 'blog':
+      break;
+  }
   return d;
 };
 
@@ -114,7 +120,7 @@ var UI = {
     $('#new_text').click(function(){
       $('html,body').animate({scrollTop: $("#updates").offset().top - 20},'slow');
       for (i = 0; i < UI.updates.length; i++) {
-        UI.template.render(new Update(UI.updates[i]),'new');
+        UI.renderTemplate(new Update(UI.updates[i]), 'new');
       }
       UI.updates = [];
       
@@ -154,20 +160,19 @@ var UI = {
   },
 
   receivedMessage: function(m){
-    var data = m[1],
-        i;
-    switch (m[0]) {
+    var type = m[0], data = m[1];
+    switch (type) {
       case 'start':
-        for (i = 0; i < data.length; i++) {
-          UI.template.render(new Update(data[i]),m[0]);
+        for (var i = 0, ii = data.length; i < ii; i++) {
+          UI.renderTemplate(new Update(data[i]), type);
         }
         break;
       case 'new':
         UI.queueUpdates(data);
         break;
       case 'more':
-        for (i = 0; i < data.length; i++) {
-          UI.template.render(new Update(data[i]),m[0]);
+        for (var i = 0, ii = data.length; i < ii; i++) {
+          UI.renderTemplate(new Update(data[i]), type);
         }
         break;
     }
@@ -254,9 +259,16 @@ var UI = {
     }
   },
 
+  renderTemplate: function(update, type){
+    UI.templates[update.type].render(update, type);
+  },
+
   start: function(){
     UI.localTime.start();
-    UI.template = new Template('update_template');
+    UI.templates = {
+      'image': new Template('image_template'),
+      'blog': new Template('blog_template')
+    }
     UI.connectToSocket();
     UI.repeating();
     
