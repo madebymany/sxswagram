@@ -4,7 +4,8 @@
 
 * Node.js 0.4.2 + npm
 * MongoDB
-* `npm install socket.io express async mongodb`
+* expat development libraries
+* `npm install socket.io express async mongodb xml2js-expat`
 
 ## Configuration
 
