@@ -262,13 +262,13 @@ article {
   background: #000;
   background: -moz-radial-gradient(50% 50%, farthest-side, rgba(0,0,0,.6), rgba(0,0,0,.9));
   background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(rgba(0,0,0,.6)), to(rgba(0,0,0,.9)));
-  //-webkit-transition: opacity .4s linear;
+  /*-webkit-transition: opacity .4s linear;*/
 }
 .update .latest {
   left: -20px;
   position: absolute;
   top: -27px;
-  //-webkit-transition: opacity .4s linear;
+  /*-webkit-transition: opacity .4s linear;*/
 }
 .update li {
   text-align:center;
@@ -294,6 +294,46 @@ article {
 .update .location span {
 
 }
+
+.update.hollergram ul {
+  display:none !important;
+}
+
+.update.hollergram .placeholder,
+.update.hollergram .placeholder img {
+  width:267px;
+  height:267px;
+}
+.update.hollergram .placeholder {
+  margin:10px 13px;
+}
+.update.hollergram .placeholder img {
+  margin:0;
+  -moz-border-radius:0;
+  -webkit-border-radius:0;
+}
+.update.hollergram .overlay {
+  margin:5px 0 0 0;
+  width:310px;
+  background: url('/images/mask_hollergram.png') no-repeat;
+}
+.update.hollergram .download {
+  position:absolute;
+  display:block;
+  overflow:hidden;
+  text-indent:-1000em;
+  width:165px;
+  height:35px;
+  bottom:-5px;
+  left:70px;
+  background: url('/images/download_app.png') no-repeat;
+  z-index:20;
+}
+.update.hollergram cite,
+.update.hollergram .avatar {
+  display:none;
+}
+
 
 .iPad.portrait #header {
   width:100%;

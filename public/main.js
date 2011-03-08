@@ -27,7 +27,12 @@ Template.prototype.render = function(obj,type){
   if (type == 'new') { html.prepend('<img src=/images/latest_post.png class=latest>'); }
   (type == 'new') ? this.container.prepend(html) : this.container.append(html);
   html.fadeIn();
-  UI.meta($('ul',html));
+  
+  if (html.hasClass('hollergram')) {
+    html.append('<a class="download" href="http://itunes.apple.com/us/app/holler-gram/id420666439?mt=8#">Download the app</a>');
+  } else {
+    UI.meta($('ul',html));
+  }
   if (!UI.isiPhone) { $('#load_more').css('visibility','hidden'); }
 };
 
@@ -132,8 +137,8 @@ var UI = {
       load_more.css('visibility','hidden').text('Loading older Instagrams...');
       var win = $(window);
       win.scroll(function(){
-        if  (win.scrollTop() == $(document).height() - win.height()){
-          if (!UI.loading) {
+        if (!UI.loading) {
+          if  (win.scrollTop() == $(document).height() - win.height()){
             UI.loading == true;
             load_more.css('visibility','visible');
             UI.requestMore();
