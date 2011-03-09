@@ -197,8 +197,14 @@ var UI = {
   connectToSocket: function(){
     var connected = false;
     var RETRY_INTERVAL = 10000;
+    var options = {rememberTransport: false};
 
-    var socket = new io.Socket(document.domain, {rememberTransport: false});
+    // Firefox seems to be flaky with Flash, but xhr-multipart seems to work well
+    if (navigator.userAgent.match(/Firefox/)) {
+      options.transports = ['xhr-multipart', 'xhr-polling', 'jsonp-polling', 'websocket', 'htmlfile'];
+    }
+
+    var socket = new io.Socket(document.domain, options);
     UI.socket = socket;
 
     var retryConnection = function(){
