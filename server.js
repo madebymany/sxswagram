@@ -30,7 +30,7 @@ var main = function(dbCollection){
         person.getLatestUpdates(instagram, function(err, res){
           if (err) {
             pollInterval = config.pollInterval.error;
-            printErr(err);
+            util.printErr(err);
           } else {
             pollInterval = config.pollInterval.normal;
             if (res) { updateReceived(res); }
