@@ -51,13 +51,14 @@ var UI = {
   updates : [],
   loading : false,
 
-  localTime : {
+  time : {
     start : function () {
       var today         = new Date(),
-          localTime     = today.getTime(),
+          time     = today.getTime(),
           localOffset   = today.getTimezoneOffset() * 60000,
-          utc           = localTime - localOffset,
+          utc           = time - localOffset,
           austinOffset  = -6,
+          londonOffset  = 0,
           austin        = utc + (3600000*austinOffset),
           todayInAustin = new Date(austin),
           h             = todayInAustin.getHours(),
@@ -73,8 +74,8 @@ var UI = {
 
       m = this.check(m);
       s = this.check(s);
-      $('#time time').html(h+":"+m+" "+ampm).attr('datetime', today);
-      t = setTimeout('UI.localTime.start();',5000);
+      $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', today);
+      t = setTimeout('UI.time.start();',5000);
     },
     check : function (i) {
       if (i<10) { i="0" + i; }
@@ -160,10 +161,11 @@ var UI = {
   },
 
   receivedMessage: function(m){
-    var type = m[0], data = m[1];
+    var type = m[0], data = m[1],
+        i;
     switch (type) {
       case 'start':
-        for (var i = 0, ii = data.length; i < ii; i++) {
+        for (i = 0, ii = data.length; i < ii; i++) {
           UI.renderTemplate(new Update(data[i]), type);
         }
         break;
@@ -171,7 +173,7 @@ var UI = {
         UI.queueUpdates(data);
         break;
       case 'more':
-        for (var i = 0, ii = data.length; i < ii; i++) {
+        for (i = 0, ii = data.length; i < ii; i++) {
           UI.renderTemplate(new Update(data[i]), type);
         }
         break;
@@ -264,11 +266,11 @@ var UI = {
   },
 
   start: function(){
-    UI.localTime.start();
+    UI.time.start();
     UI.templates = {
       'image': new Template('image_template'),
       'blog': new Template('blog_template')
-    }
+    };
     UI.connectToSocket();
     UI.repeating();
     

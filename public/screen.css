@@ -15,9 +15,9 @@ hr {
 @media screen and (min-device-width: 750px)  {
   #header {
     margin:auto;
-    height:412px;
+    height:305px;
     width:100%;
-    background: url('/images/header_bg.gif') 50% 100% repeat-x;
+    background: url('/images/header_bg.gif') 50% -109px repeat-x;
   }
   #header .bg {
     position:absolute;
@@ -38,63 +38,69 @@ hr {
   article header {
     position:absolute;
     width:960px;
-    top:130px;
+    top:60px;
     margin:auto;
     text-align:center;
   }
   article header span {
-    width:517px;
-    height:111px;
+    
+    /*width:517px;
+        height:111px;*/
+    width:744px;
+    height:61px;
     display:block;
-    background: url('/images/goes_southwest.gif') no-repeat;
+    background: url('/images/goes_southwest_large.gif') no-repeat;
     overflow:hidden;
     text-indent:-10000em;
-    margin:25px auto;
+    margin:55px auto 10px;
   }
   article header #mxm {
     position:absolute;
-    top:-15px;
-    left:120px;
+    top:0;
+    left:70px;
     width:260px;
     height:55px;
     background: url('/images/logo_large.png') no-repeat;
     margin:0;
   }
   #strapline {
-    font-weight:bold;
-    font-size:18px;
-    color:#fff;
-    text-align:center;
+    width:719px;
+    height:34px;
+    overflow:hidden;
+    text-indent:-1000em;
+    background: url('/images/strapline.png') no-repeat;
+    margin:auto;
   }
-  #time {
-    font-weight:bold;
-    font-size:15px;
-    color:#fff;
-    margin-top:10px;
-    text-align:right;
+  #london_time {
+    float:left;
   }
-  #time time {
+  #local_time {
+    float:right;
+  }
+  #london_time span,
+  #local_time span {
+    display:block;
+    text-indent:-1000em;
+    overflow:hidden;
+    margin:10px 0;
+  }
+  #london_time span {
+    width:130px;
+    height:17px;
+    float:left;
+    background: url('/images/london_time.png') no-repeat;
+  }
+  #local_time span {
+    width:101px;
+    height:17px;
+    float:right;
+    background: url('/images/local_time.png') no-repeat;
+  }
+  time {
     color:#ebd40f;
     min-width:65px;
     display:inline-block;
     text-align:left;
-  }
-  #instagram {
-    width:100%;
-    display:block;
-    color:#ebd40f;
-    text-decoration:none;
-    margin-top:20px;
-    font-weight:bold;
-  }
-  #instagram span {
-    position:static;
-    width:83px;
-    height:30px;
-    display:inline-block;
-    vertical-align:middle;
-    background: url('/images/mini_instagram.png') no-repeat;
-    margin:0;
   }
 }
 #header nav {
@@ -298,7 +304,9 @@ article {
 .update.hollergram ul {
   display:none !important;
 }
-
+.update.blog .overlay {
+  background: url('/images/mask_blog.gif') no-repeat -5px 0;
+}
 .update.hollergram .placeholder,
 .update.hollergram .placeholder img {
   width:267px;
