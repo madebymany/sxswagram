@@ -1,6 +1,6 @@
 .PHONY:	all lint test loc
 
-SRC_ROOT=./lib
+SRC_ROOT=.
 TEST_ROOT=./test
 
 all:	lint test

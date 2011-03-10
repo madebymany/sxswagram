@@ -1,4 +1,6 @@
-var Update = function(data){
+var UI, Update, Template;
+
+Update = function(data){
   this.data = data;
   this.type = data.type;
 };
@@ -21,7 +23,7 @@ Update.prototype.forTemplate = function(){
   return d;
 };
 
-var Template = function(name){
+Template = function(name){
   var script = $('#' + name);
   this.template = script.html();
   this.container = script.parent();
@@ -31,7 +33,11 @@ var Template = function(name){
 Template.prototype.render = function(obj,type){
   var html = $(Mustache.to_html(this.template, obj.forTemplate())).hide();
   if (type == 'new') { html.prepend('<img src=/images/latest_post.png class=latest>'); }
-  (type == 'new') ? this.container.prepend(html) : this.container.append(html);
+  if (type == 'new') {
+    this.container.prepend(html);
+  } else {
+    this.container.append(html);
+  }
   html.fadeIn();
   
   if (html.hasClass('hollergram')) {
@@ -42,11 +48,11 @@ Template.prototype.render = function(obj,type){
   if (!UI.isiPhone) { $('#load_more').css('visibility','hidden'); }
 };
 
-var UI = {
+UI = {
 
   //test for iPad/iPhone
-  isiPad:   navigator.userAgent.match(/iPad/i) != null,
-  isiPhone: navigator.userAgent.match(/iPhone/i) != null,
+  isiPad:   !!navigator.userAgent.match(/iPad/i),
+  isiPhone: !!navigator.userAgent.match(/iPhone/i),
 
   updates : [],
   loading : false,
@@ -66,16 +72,11 @@ var UI = {
           s             = todayInAustin.getSeconds(),
           ampm          = (h > 11) ? "pm" : "am";
 
-      if (h > 12) {
-        h = h -12;
-      } else if (h == 0) {
-        h = 12;
-      }
-
+      h = ((h + 11) % 12) + 1;
       m = this.check(m);
       s = this.check(s);
       $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', today);
-      t = setTimeout('UI.time.start();',5000);
+      t = setTimeout(UI.time.start, 5000);
     },
     check : function (i) {
       if (i<10) { i="0" + i; }
@@ -91,7 +92,7 @@ var UI = {
       $('li', meta).each(function(){
         var item = $(this),
             no_whitespace = item.text().replace(/^\s*|\s*$/g,'');
-        if (no_whitespace.length == 0) {
+        if (no_whitespace.length === 0) {
           item.text('');
         }
         ih = ih + item.height();
@@ -146,8 +147,8 @@ var UI = {
       win.scroll(function(){
         if (!UI.loading) {
           if  (win.scrollTop() == $(document).height() - win.height()){
+            UI.loading = true;
             load_more.css('visibility','visible');
-            UI.loading == true;
             UI.requestMore();
           }
         }
@@ -181,7 +182,7 @@ var UI = {
         break;
     }
     if (!UI.isiPhone) {load_more.css('visibility','hidden');}
-    UI.loading == false;
+    UI.loading = false;
   },
 
   queueUpdates: function (data) {
@@ -254,17 +255,19 @@ var UI = {
 
       if (UI.isiPhone) {
         addEventListener("load", function() {
-          setTimeout('window.scrollTo(0, 1)', 0);
+          setTimeout(function(){window.scrollTo(0, 1);}, 0);
         }, false);
       }
     },
     setOrientation : function () {
       var body = $('body');
-      if ( orientation == 0 || orientation == 180 ) {
-        body.addClass('portrait').removeClass('landscape');
-      }
-      else if ( orientation == 90 || orientation == -90 ) {
-        body.addClass('landscape').removeClass('portrait');
+      switch ((orientation + 180) % 180 === 0) {
+        case 0:
+          body.addClass('portrait').removeClass('landscape');
+          break;
+        case 90:
+          body.addClass('landscape').removeClass('portrait');
+          break;
       }
     }
   },
