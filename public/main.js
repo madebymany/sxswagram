@@ -18,6 +18,10 @@ Update.prototype.forTemplate = function(){
       d.tags = d.tags.join(' ');
       break;
     case 'blog':
+      d.profile_picture = UI.avatar_map.src(d.author);
+      d.id = d.created_time;
+      d.created_time = new Date(d.created_time);
+      d.author = UI.name_map[d.author];
       break;
   }
   return d;
@@ -41,7 +45,7 @@ Template.prototype.render = function(obj,type){
   html.fadeIn();
   
   if (html.hasClass('hollergram')) {
-    html.append('<a class="download" href="http://itunes.apple.com/us/app/holler-gram/id420666439?mt=8#">Download the app</a>');
+    html.append('<a class="download" target="_blank" href="http://itunes.apple.com/us/app/holler-gram/id420666439?mt=8#">Download the app</a>');
   } else {
     UI.meta($('ul',html));
   }
@@ -56,6 +60,62 @@ UI = {
 
   updates : [],
   loading : false,
+
+  avatar_map: {
+    "malbonster": "malbonster",
+    "wdowen": "william",
+    "stueccles": "stueccles",
+    "bobbyc": "isaac",
+    "scandalousT": "scandaloust",
+    "mikelaurie": "mike",
+    "threedaymonk": "paulb",
+    "olvado": "olvado",
+    "saradotdub": "saradotdub",
+    "Paul Sims": "pauls",
+    "ninjabiscuit": "ninjabiscuit",
+    "juxtapozed": "juxtapozed",
+    "crashtherocks": "crashtherocks",
+    "ohrworm": "ohrworm",
+    "James Higgs": "james",
+    "conordelahunty": "conordelahunty",
+    "anjali28": "anjali",
+    "juzmcmuz": "juzmcmuz",
+    "simonianson": "simon",
+    "mattwilliams": "matt",
+    "Antonica Thomas-Dumont": "antonica",
+    "jgsjames": "julian",
+    "suttree": "duncan",
+    "Sophie Bastow-Dormon": "sophie",
+    src : function(author) {
+      return "/images/avatar_" + UI.avatar_map[author] + ".png";
+    }
+  },
+  name_map : {
+    "malbonster": "Tim Malbon",
+    "wdowen": "William Owen",
+    "stueccles": "Stuart Eccles",
+    "bobbyc": "Isaac Pinnock",
+    "scandalousT": "Tara Bloom",
+    "mikelaurie": "Mike Laurie",
+    "threedaymonk": "Paul Battley",
+    "olvado": "Oli Matthews",
+    "saradotdub": "Sara Williams",
+    "Paul Sims": "Paul Sims",
+    "ninjabiscuit": "Andy Walker",
+    "juxtapozed": "Tom Harding",
+    "crashtherocks": "Charlotte Hillenbrand",
+    "ohrworm": "Cath Richardson",
+    "James Higgs": "James Higgs",
+    "conordelahunty": "Conor Delahunty",
+    "anjali28": "Anjali Ramachandran",
+    "juzmcmuz": "Justin Murray",
+    "simonianson": "Simon I'Anson",
+    "mattwilliams": "Matt Williams",
+    "Antonica Thomas-Dumont": "Antonica Thomas-Dumont",
+    "jgsjames": "Julian James",
+    "suttree": "Duncan Gough",
+    "Sophie Bastow-Dormon": "Sophie Bastow-Dormon"
+  },
 
   time : {
     start : function () {
@@ -73,8 +133,8 @@ UI = {
           ampm          = (h > 11) ? "pm" : "am";
 
       h = ((h + 11) % 12) + 1;
-      m = this.check(m);
-      s = this.check(s);
+      m = UI.time.check(m);
+      s = UI.time.check(s);
       $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', today);
       t = setTimeout(UI.time.start, 5000);
     },

@@ -243,6 +243,7 @@ time {
   display:block;
   position:absolute;
   right:0px;
+  top:0;
   z-index:12;
 }
 .update cite {
@@ -303,6 +304,43 @@ time {
 }
 .update.blog .overlay {
   background: url('/images/mask_blog.gif') no-repeat -5px 0;
+}
+.update.blog h2 {
+  position:relative;
+  z-index:30;
+  font-size:25px;
+  font-weight:bold;
+  font-style: italic;
+  padding:100px 40px 30px 30px;
+}
+.update.blog h2 a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+.update.blog h2 a:hover {
+  color:#28a1d9;
+}
+.blog .read_blog {
+  z-index:30;
+  position:absolute;
+  bottom:-5px;
+  right:6px;
+  width:186px;
+  height:34px;
+  overflow:hidden;
+  text-indent:-3400em;
+  display:block;
+  background: url('/images/read_blog.gif')
+}
+.update.blog p {
+  margin:0 0 0 30px;
+}
+.update.blog cite {
+  display: inline;
+  width: auto;
+  height: auto;
+  text-align: left;
+  position:static;
 }
 .update.hollergram .placeholder,
 .update.hollergram .placeholder img {

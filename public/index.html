@@ -50,6 +50,9 @@
         <li id="update_{{element_id}}" class="update blog time" data-timestamp={{created_time}}>
           <div class=overlay></div>
           <h2><a href={{link}}>{{title}}</a></h2>
+          <p>By <cite>{{author}}</cite></p>
+          <img src={{profile_picture}} class=avatar>
+          <a href="{{link}}" class=read_blog>Read this post</a>
       </script>
     </ul>
     <hr>
@@ -62,4 +65,14 @@
   <script src=//cdn.socket.io/stable/socket.io.js></script>
   <script src=/mustache.js></script>
   <script src=/main.js></script>
+  <script type=text/javascript>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-153994-26']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body>
