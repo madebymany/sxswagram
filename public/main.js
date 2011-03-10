@@ -153,11 +153,14 @@ UI = {
         var item = $(this),
             no_whitespace = item.text().replace(/^\s*|\s*$/g,'');
         if (no_whitespace.length === 0) {
-          item.text('');
+          item.text('').remove();
         }
         ih = ih + item.height();
       });
       $('li:first', meta).css('margin-top', (h - ih) / 2);
+      if ($('li', meta).length == 0) {
+        meta.remove();
+      }
     });
     
     var parent = el.parent();
