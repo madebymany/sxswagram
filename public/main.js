@@ -1,4 +1,6 @@
-var Update = function(data){
+var UI, Update, Template;
+
+Update = function(data){
   this.data = data;
   this.type = data.type;
 };
@@ -21,7 +23,7 @@ Update.prototype.forTemplate = function(){
   return d;
 };
 
-var Template = function(name){
+Template = function(name){
   var script = $('#' + name);
   this.template = script.html();
   this.container = script.parent();
@@ -46,7 +48,7 @@ Template.prototype.render = function(obj,type){
   if (!UI.isiPhone) { $('#load_more').css('visibility','hidden'); }
 };
 
-var UI = {
+UI = {
 
   //test for iPad/iPhone
   isiPad:   !!navigator.userAgent.match(/iPad/i),
