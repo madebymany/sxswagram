@@ -113,10 +113,8 @@ var main = function(dbCollection){
   //
   var receivedMessage = function(client, raw){
     util.decodeMessage(raw, E(function(type, data){
-      switch (type) {
-        case 'more':
-          sendUpdates(client, data);
-          break;
+      if (type === 'more') {
+        sendUpdates(client, data);
       }
     }));
   };
