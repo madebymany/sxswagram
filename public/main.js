@@ -323,13 +323,10 @@ UI = {
     },
     setOrientation : function () {
       var body = $('body');
-      switch ((orientation + 180) % 180 === 0) {
-        case 0:
-          body.addClass('portrait').removeClass('landscape');
-          break;
-        case 90:
-          body.addClass('landscape').removeClass('portrait');
-          break;
+      if (orientation % 180 === 0) {
+        body.addClass('portrait').removeClass('landscape');
+      } else {
+        body.addClass('landscape').removeClass('portrait');
       }
     }
   },
