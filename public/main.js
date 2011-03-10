@@ -199,7 +199,7 @@ UI = {
   },
 
   requestMoreUpdates : function () {
-    load_more = $('#load_more').show();
+    var load_more = $('#load_more').show();
     if (UI.isiPhone) {
       load_more.text('Load older Instagrams').click(function(){
         UI.requestMore();

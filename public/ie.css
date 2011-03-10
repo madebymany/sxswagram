@@ -1,0 +1,57 @@
+#header {
+  margin:auto;
+  height:305px;
+  width:100%;
+  background: url('/images/header_bg.gif') 50% -109px repeat-x;
+}
+#header .bg {
+  position:absolute;
+  top:0;
+  display:block;
+  width:100%;
+  text-align:center;
+}
+#header .logo {
+  position:absolute;
+  top:20px;
+  left:0;
+}
+article {
+  width:960px;
+  margin:20px auto;
+}
+article header {
+  position:absolute;
+  width:960px;
+  top:60px;
+  margin:auto;
+  text-align:center;
+}
+article header h1 span {
+  /*width:517px;
+      height:111px;*/
+  width:744px;
+  height:61px;
+  display:block;
+  background: url('/images/goes_southwest_large.gif') no-repeat;
+  overflow:hidden;
+  text-indent:-10000em;
+  margin:55px auto 10px;
+}
+article header #mxm {
+  position:absolute;
+  top:0;
+  left:70px;
+  width:260px;
+  height:55px;
+  background: url('/images/logo_large.png') no-repeat;
+  margin:0;
+}
+#strapline {
+  width:719px;
+  height:34px;
+  overflow:hidden;
+  text-indent:-1000em;
+  background: url('/images/strapline.png') no-repeat;
+  margin:auto;
+}
