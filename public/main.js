@@ -20,7 +20,6 @@ Update.prototype.forTemplate = function(){
     case 'blog':
       d.profile_picture = UI.avatar_map.src(d.author);
       d.id = d.created_time;
-      d.created_time = new Date(d.created_time);
       d.author = UI.name_map[d.author];
       break;
   }

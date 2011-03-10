@@ -1,0 +1,11 @@
+Alex Harding: Design
+  t: @Alex_R_Harding
+  i: thebeardedone
+
+Oli Matthews: Front-end implementation
+  t: @olvado
+  i: olvado
+
+Paul Battley: Server coding
+  t: @threedaymonk
+  i: threedaymonk (but still waiting for an Android client!)
