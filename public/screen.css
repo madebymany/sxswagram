@@ -43,7 +43,6 @@ hr {
     text-align:center;
   }
   article header h1 span {
-    
     /*width:517px;
         height:111px;*/
     width:744px;
@@ -409,11 +408,11 @@ time {
     width:100%;
   }
   #header {
-    height:230px
+    height:190px;
   }
   #header .bg {
     overflow:hidden;
-    height:230px !important;
+    height:190px !important;
     position:absolute;
     top:0;
     left:0;
@@ -427,7 +426,7 @@ time {
   #header nav {
     width:100%;
     position:absolute;
-    top:180px;
+    top:140px;
     height:30px;
     padding:0;
     overflow:hidden;
@@ -452,7 +451,7 @@ time {
   #strapline {
     font-size:13px;
   }
-  #time { display:none; }
+  #london_time, #local_time { display:none; }
   article header {
     position:relative;
     top:-200px;
@@ -470,15 +469,17 @@ time {
     text-indent:-1000em;
     overflow:hidden;
     background: url('/images/mini_goes_southwest.png') no-repeat 50% 0;
-    position:relative;
-    top:-15px;
+    /*position:relative;*/
+    margin-top:40px;
+    margin-bottom:15px;
   }
   article header #mxm {
     background: url('/images/mxm.png') no-repeat;
     width:67px;
     height:29px;
-    top:0;
-    left:-10px;
+    top:-55px;
+    position:absolute;
+    left:5px;
   }
   #strapline {
     margin-bottom:10px;
