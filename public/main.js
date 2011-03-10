@@ -70,12 +70,7 @@ var UI = {
           s             = todayInAustin.getSeconds(),
           ampm          = (h > 11) ? "pm" : "am";
 
-      if (h > 12) {
-        h = h -12;
-      } else if (h === 0) {
-        h = 12;
-      }
-
+      h = ((h + 11) % 12) + 1;
       m = this.check(m);
       s = this.check(s);
       $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', today);
