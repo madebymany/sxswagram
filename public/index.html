@@ -43,13 +43,14 @@
       <script id=image_template type=text/html>
         <li id="update_{{element_id}}" class="update image {{username}} {{tags}}" data-timestamp={{created_time}}>
           <div class=overlay></div>
-          <span class=placeholder><img src={{image_url}} alt={{caption_text}}></span>
+          <span class=placeholder><img src={{image_url}} alt="{{caption_text}}"></span>
           <ul>
-            <li class=caption><span><img src=/images/bubble.png> {{caption_text}}
-            <li class=location><span><img src=/images/location_pin.png> {{location_name}}
+            <li class=caption><span><img src=/images/bubble.png> {{caption_text}}</span></li>
+            <li class=location><span><img src=/images/location_pin.png> {{location_name}}</span></li>
           </ul>
           <img src=/images/{{profile_picture}} class=avatar>
           <cite><img src=/images/name_{{username}}.png></cite>
+        </li>
       </script>
       <script id=blog_template type=text/html>
         <li id="update_{{element_id}}" class="update blog time" data-timestamp={{created_time}}>
@@ -58,6 +59,7 @@
           <p>By <cite>{{author}}</cite></p>
           <img src={{profile_picture}} class=avatar>
           <a href="{{link}}" class=read_blog>Read this post</a>
+        </li>
       </script>
     </ul>
     <hr>

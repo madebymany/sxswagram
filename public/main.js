@@ -7,21 +7,18 @@ Update = function(data){
 
 Update.prototype.forTemplate = function(){
   var d = this.data;
-  switch (this.type) {
-    case 'image':
-      d.location_name = (d.location) ? d.location.name : null;
-      d.image_url = d.images.low_resolution.url;
-      d.element_id = d.id;
-      d.username = d.user.username;
-      d.profile_picture = 'avatar_' + d.user.username + '.png';
-      d.caption_text = d.caption ? d.caption.text : null;
-      d.tags = d.tags.join(' ');
-      break;
-    case 'blog':
-      d.profile_picture = UI.avatar_map.src(d.author);
-      d.id = d.created_time;
-      d.author = UI.name_map[d.author];
-      break;
+  if (this.type == 'image') {
+    d.location_name = (d.location) ? d.location.name : null;
+    d.image_url = d.images.low_resolution.url;
+    d.element_id = d.id;
+    d.username = d.user.username;
+    d.profile_picture = 'avatar_' + d.user.username + '.png';
+    d.caption_text = d.caption ? d.caption.text : null;
+    d.tags = d.tags.join(' ');
+  } else if (this.type == 'blog') {
+    d.profile_picture = UI.avatar_map.src(d.author);
+    d.id = d.created_time;
+    d.author = UI.name_map[d.author];
   }
   return d;
 };
@@ -34,20 +31,25 @@ Template = function(name){
 };
 
 Template.prototype.render = function(obj,type){
-  var html = $(Mustache.to_html(this.template, obj.forTemplate())).hide();
-  if (type == 'new') { html.prepend('<img src=/images/latest_post.png class=latest>'); }
+   
+  var html = Mustache.to_html(this.template, obj.forTemplate());
+
+  html = $(html);
+  
   if (type == 'new') {
     this.container.prepend(html);
+    html.prepend('<img src=/images/latest_post.png class=latest>');
   } else {
     this.container.append(html);
   }
-  html.fadeIn();
   
+  html.hide().fadeIn();
+
   if (html.hasClass('hollergram')) {
-    html.append('<a class="download" target="_blank" href="http://itunes.apple.com/us/app/holler-gram/id420666439?mt=8#">Download the app</a>');
-  } else {
-    UI.meta($('ul',html));
-  }
+      html.append('<a class="download" target="_blank" href="http://itunes.apple.com/us/app/holler-gram/id420666439?mt=8#">Download the app</a>');
+    } else {
+      UI.meta($('ul',html));
+    }
   if (!UI.isiPhone) { $('#load_more').css('visibility','hidden'); }
 };
 
@@ -107,7 +109,7 @@ UI = {
     "James Higgs": "James Higgs",
     "conordelahunty": "Conor Delahunty",
     "anjali28": "Anjali Ramachandran",
-    "juzmcmuz": "Justin Murray",
+    "juzmcmuz": "Justin McMurray",
     "simonianson": "Simon I'Anson",
     "mattwilliams": "Matt Williams",
     "Antonica Thomas-Dumont": "Antonica Thomas-Dumont",
@@ -267,6 +269,8 @@ UI = {
     // Firefox seems to be flaky with Flash, but xhr-multipart seems to work well
     if (navigator.userAgent.match(/Firefox/)) {
       options.transports = ['xhr-multipart', 'xhr-polling', 'jsonp-polling', 'websocket', 'htmlfile'];
+    } else if (navigator.userAgent.match(/MSIE/)) {
+      options.transports = ['xhr-multipart', 'xhr-polling', 'jsonp-polling', 'htmlfile'];
     }
 
     var socket = new io.Socket(document.domain, options);
