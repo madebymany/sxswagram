@@ -42,7 +42,7 @@ hr {
     margin:auto;
     text-align:center;
   }
-  article header span {
+  article header h1 span {
     
     /*width:517px;
         height:111px;*/
@@ -70,37 +70,6 @@ hr {
     text-indent:-1000em;
     background: url('/images/strapline.png') no-repeat;
     margin:auto;
-  }
-  #london_time {
-    float:left;
-  }
-  #local_time {
-    float:right;
-  }
-  #london_time span,
-  #local_time span {
-    display:block;
-    text-indent:-1000em;
-    overflow:hidden;
-    margin:10px 0;
-  }
-  #london_time span {
-    width:130px;
-    height:17px;
-    float:left;
-    background: url('/images/london_time.png') no-repeat;
-  }
-  #local_time span {
-    width:101px;
-    height:17px;
-    float:right;
-    background: url('/images/local_time.png') no-repeat;
-  }
-  time {
-    color:#ebd40f;
-    min-width:65px;
-    display:inline-block;
-    text-align:left;
   }
 }
 #header nav {
@@ -192,7 +161,36 @@ article {
   height:21px;
   line-height:21px;
 }
-
+#london_time {
+  float:left;
+  display:none;
+}
+#local_time {
+  float:right;
+}
+#london_time span,
+#local_time span {
+  display:block;
+  text-indent:-1000em;
+  overflow:hidden;
+  margin:10px 0 0;
+}
+#london_time span {
+  width:130px;
+  height:17px;
+  background: url('/images/london_time.png') no-repeat;
+}
+#local_time span {
+  width:101px;
+  height:17px;
+  background: url('/images/local_time.png') no-repeat;
+}
+time {
+  color:#ebd40f;
+  min-width:65px;
+  display:inline-block;
+  text-align:left;
+}
 .update {
   width:312px;
   height:310px;
@@ -343,35 +341,37 @@ article {
 }
 
 
-.iPad.portrait #header {
-  width:100%;
-  height:320px;
-}
 .iPad.portrait #header nav,
+.iPad.portrait #header img,
 .iPad.portrait article,
-.iPad.portrait article header,
-.iPad.portrait .bg img {
+.iPad.portrait article header {
   width:720px;
 }
-.iPad.portrait .bg {
-  padding-top:30px;
+.iPad.portrait #header {
+  height:207px;
 }
-.iPad.portrait article header span {
-  margin-top:-20px;
-  margin-bottom:10px;
+.iPad.portrait #mxm {
+  left:-10px;
+  top:-15px;
+  background: url('/images/mxm.png') no-repeat;
+  width:67px;
+  height:29px;
 }
-.iPad.portrait article #mxm {
-  top:-60px;
-  left:20px;
-}
-.iPad.portrait #load_new {
-  width:100%;
+.iPad.portrait article header h1 span {
+  margin-top:10px;
+  margin-left:-10px;
 }
 .iPad.portrait #updates {
-  width:645px;
-  margin:0 auto;
+  width:660px;
+  margin: 0 auto;
 }
-
+.iPad.portrait #local_time {
+  width:200px;
+}
+.iPad.portrait #local_time span {
+  float:left;
+  margin-top:2px;
+}
 .iDevice #load_new {
   background: url('/images/load_new_i.png') no-repeat;
   position:fixed;

@@ -135,7 +135,7 @@ var UI = {
   },
 
   requestMoreUpdates : function () {
-    load_more = $('#load_more');
+    load_more = $('#load_more').show();
     if (UI.isiPhone) {
       load_more.text('Load older Instagrams').click(function(){
         UI.requestMore();
@@ -146,8 +146,8 @@ var UI = {
       win.scroll(function(){
         if (!UI.loading) {
           if  (win.scrollTop() == $(document).height() - win.height()){
-            UI.loading == true;
             load_more.css('visibility','visible');
+            UI.loading == true;
             UI.requestMore();
           }
         }
@@ -162,9 +162,11 @@ var UI = {
 
   receivedMessage: function(m){
     var type = m[0], data = m[1],
-        i;
+        i,
+        load_more = $('#load_more');
     switch (type) {
       case 'start':
+        load_more.show().css('visibility','visible');
         for (i = 0, ii = data.length; i < ii; i++) {
           UI.renderTemplate(new Update(data[i]), type);
         }
@@ -178,6 +180,7 @@ var UI = {
         }
         break;
     }
+    if (!UI.isiPhone) {load_more.css('visibility','hidden');}
     UI.loading == false;
   },
 
@@ -244,8 +247,8 @@ var UI = {
   iDevice : {
     start : function () {
       var device = (UI.isiPad) ? 'iPad' : 'iPhone';
-      $('body').addClass('iDevice portrait' + device);
-
+      $('body').addClass('iDevice portrait ' + device);
+      
       this.setOrientation();
       window.onorientationchange = this.setOrientation;
 
