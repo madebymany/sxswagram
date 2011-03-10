@@ -187,7 +187,6 @@ var UI = {
     }
     $('#new_count').text(UI.updates.length);
     if (UI.isiPhone||UI.isiPad) {
-      alert(window.pageYOffset);
       $('#load_new').css('top',window.pageYOffset + 20).animate({left:0});
     } else {
       $('#load_new').animate({bottom:0});
