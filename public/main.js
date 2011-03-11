@@ -12,11 +12,10 @@ Update.prototype.forTemplate = function(){
     d.image_url = d.images.low_resolution.url;
     d.element_id = d.id;
     d.username = d.user.username;
-    d.profile_picture = 'avatar_' + d.user.username + '.png';
     d.caption_text = d.caption ? d.caption.text : null;
     d.tags = d.tags.join(' ');
   } else if (this.type == 'blog') {
-    d.profile_picture = UI.avatar_map.src(d.author);
+    d.username = UI.avatar_map[d.author];
     d.id = d.created_time;
     d.author = UI.name_map[d.author];
   }
@@ -86,10 +85,7 @@ UI = {
     "Antonica Thomas-Dumont": "antonica",
     "jgsjames": "julian",
     "suttree": "duncan",
-    "Sophie Bastow-Dormon": "sophie",
-    src : function(author) {
-      return "/images/avatar_" + UI.avatar_map[author] + ".png";
-    }
+    "Sophie Bastow-Dormon": "sophie"
   },
   name_map : {
     "malbonster": "Tim Malbon",

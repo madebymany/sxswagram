@@ -48,8 +48,8 @@
             <li class=caption><span><img src=/images/bubble.png> {{caption_text}}</span></li>
             <li class=location><span><img src=/images/location_pin.png> {{location_name}}</span></li>
           </ul>
-          <img src=/images/{{profile_picture}} class=avatar>
-          <cite><img src=/images/name_{{username}}.png></cite>
+          <img src=/images/avatars/{{username}}.png class=avatar>
+          <cite><img src=/images/names/{{username}}.png></cite>
         </li>
       </script>
       <script id=blog_template type=text/html>
@@ -57,7 +57,7 @@
           <div class=overlay></div>
           <h2><a href={{link}}>{{title}}</a></h2>
           <p>By <cite>{{author}}</cite></p>
-          <img src={{profile_picture}} class=avatar>
+          <img src=/images/avatars/{{username}}.png class=avatar>
           <a href="{{link}}" class=read_blog>Read this post</a>
         </li>
       </script>
