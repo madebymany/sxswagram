@@ -1,4 +1,5 @@
 var config    = require('./config/config').config,
+    sys       = require('sys'),
     instagram = require('./lib/instagram').
                   createClient(config.clientId, config.accessToken),
     util      = require('./lib/util'),
@@ -27,7 +28,7 @@ var main = function(dbCollection){
     dbCollection.getLatestUpdateId(person.userId, E(function(n){
       person.setMinId(n);
       var poll = function(){
-        console.log('polling '+person.userId);
+        sys.log('polling '+person.userId);
         person.getLatestUpdates(instagram, function(err, res){
           if (err) {
             pollInterval = config.pollInterval.error;
@@ -55,7 +56,7 @@ var main = function(dbCollection){
   dbCollection.getLatestBlogPostTime(E(function(n){
     blog.setMinTimestamp(n);
     var poll = function(){
-      console.log('polling blog feed');
+      sys.log('polling blog feed');
       blog.getLatestPosts(E(function(post){
         updateReceived(post);
       }));
@@ -72,16 +73,16 @@ var main = function(dbCollection){
   var updateReceived = function(update){
     switch (update.type) {
       case 'image':
-        console.log('received update for ' + update.user.username);
+        sys.log('received update for ' + update.user.username);
         break;
       case 'blog':
-        console.log('found blog post ' + update.title);
+        sys.log('found blog post ' + update.title);
         break;
       case 'clock':
-        console.log('clock update ' + update.created_time);
+        sys.log('clock update ' + update.created_time);
         break;
       default:
-        console.log('unknown update ' + update.type);
+        sys.log('unknown update ' + update.type);
     }
     cachedInitialUpdates = null;
     dbCollection.insert(update, E());
