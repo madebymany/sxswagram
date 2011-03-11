@@ -41,7 +41,7 @@
     </header>
     <ul id=updates>
       <script id=image_template type=text/html>
-        <li id="update_{{element_id}}" class="update image {{username}} {{tags}}" data-timestamp={{created_time}}>
+        <li class="update image {{username}} {{tags}}" data-timestamp={{created_time}}>
           <div class=overlay></div>
           <span class=placeholder><img src={{image_url}} alt="{{caption_text}}"></span>
           <ul>
@@ -53,12 +53,18 @@
         </li>
       </script>
       <script id=blog_template type=text/html>
-        <li id="update_{{element_id}}" class="update blog time" data-timestamp={{created_time}}>
+        <li class="update blog time" data-timestamp={{created_time}}>
           <div class=overlay></div>
           <h2><a href={{link}}>{{title}}</a></h2>
           <p>By <cite>{{author}}</cite></p>
           <img src=/images/avatars/{{username}}.png class=avatar>
           <a href="{{link}}" class=read_blog>Read this post</a>
+        </li>
+      </script>
+      <script id=clock_template type=text/html>
+        <li class="update clock" data-timestamp={{created_time}}>
+          <div class=overlay></div>
+          <img src=/images/clocks/{{created_time}}.png>
         </li>
       </script>
     </ul>

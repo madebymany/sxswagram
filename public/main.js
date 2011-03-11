@@ -10,7 +10,6 @@ Update.prototype.forTemplate = function(){
   if (this.type == 'image') {
     d.location_name = (d.location) ? d.location.name : null;
     d.image_url = d.images.low_resolution.url;
-    d.element_id = d.id;
     d.username = d.user.username;
     d.caption_text = d.caption ? d.caption.text : null;
     d.tags = d.tags.join(' ');
@@ -339,7 +338,8 @@ UI = {
     UI.time.start();
     UI.templates = {
       'image': new Template('image_template'),
-      'blog': new Template('blog_template')
+      'blog': new Template('blog_template'),
+      'clock': new Template('clock_template')
     };
     UI.connectToSocket();
     UI.repeating();

@@ -9,6 +9,7 @@ var config    = require('./config/config').config,
                   createServer(config.port, __dirname + '/public'),
     atom      = require('./lib/atom'),
     blog      = new atom.Feed(config.atom.url),
+    clock     = require('./lib/clock'),
     cachedInitialUpdates = null;
 
 var E = util.errorHandler(function(err){
@@ -76,6 +77,9 @@ var main = function(dbCollection){
       case 'blog':
         console.log('found blog post ' + update.title);
         break;
+      case 'clock':
+        console.log('clock update ' + update.created_time);
+        break;
       default:
         console.log('unknown update ' + update.type);
     }
@@ -83,6 +87,21 @@ var main = function(dbCollection){
     dbCollection.insert(update, E());
     server.clientPool.broadcast(util.encodeMessage('new', [update]));
   };
+
+  // Send clock updates
+  dbCollection.getAllClocks(E(function(completed){
+    clock.getAllClocks(__dirname + '/public/images/clocks', E(function(all){
+      var outstanding = util.arrSubtract(all, completed).sort();
+      var poll = function(){
+        setTimeout(poll, 60000);
+        var now = new Date().getTime() / 1000;
+        while (outstanding.length > 0 && outstanding[0] < now) {
+          updateReceived({type: 'clock', created_time: outstanding.shift()});
+        }
+      };
+      poll();
+    }));
+  }));
 
   // Send client a batch of the latest N updates before timestamp
   //
