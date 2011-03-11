@@ -34,7 +34,7 @@ Template.prototype.render = function(obj,type){
 
   html = $(html);
   
-  if (type == 'new') {
+  if (type == 'new' && obj.type !== 'clock') {
     this.container.prepend(html);
     html.prepend('<img src=/images/latest_post.png class=latest>');
   } else {
