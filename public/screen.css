@@ -302,6 +302,9 @@ time {
 .update.hollergram ul {
   display:none !important;
 }
+.update.clock .overlay {
+  background: none;
+}
 .update.blog .overlay {
   background: url('/images/mask_blog.gif') no-repeat -5px 0;
 }
