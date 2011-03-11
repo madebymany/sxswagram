@@ -115,26 +115,21 @@ UI = {
 
   time : {
     start : function () {
-      var today         = new Date(),
-          time     = today.getTime(),
-          localOffset   = today.getTimezoneOffset() * 60000,
-          utc           = time - localOffset,
-          austinOffset  = -6,
-          londonOffset  = 0,
-          austin        = utc + (3600000*austinOffset),
-          todayInAustin = new Date(austin),
-          h             = todayInAustin.getHours(),
-          m             = todayInAustin.getMinutes(),
-          s             = todayInAustin.getSeconds(),
-          ampm          = (h > 11) ? "pm" : "am";
+      var now = new Date();
+      var austinOffset = -6 * 60;
+      var browserOffset = now.getTimezoneOffset();
+      var timeInAustin = new Date(now.getTime() + (austinOffset + browserOffset) * 60000);
+      var h    = ((timeInAustin.getHours() + 11) % 12) + 1;
+          m    = timeInAustin.getMinutes(),
+          s    = timeInAustin.getSeconds(),
+          ampm = (timeInAustin.getHours() > 11) ? "pm" : "am";
 
-      h = ((h + 11) % 12) + 1;
-      m = UI.time.check(m);
-      s = UI.time.check(s);
-      $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', today);
-      t = setTimeout(UI.time.start, 5000);
+      m = UI.time.zeroPad(m);
+      s = UI.time.zeroPad(s);
+      $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', now);
+      setTimeout(UI.time.start, 5000);
     },
-    check : function (i) {
+    zeroPad: function (i) {
       if (i<10) { i="0" + i; }
       return i;
     }
