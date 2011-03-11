@@ -84,7 +84,8 @@ UI = {
     "Antonica Thomas-Dumont": "antonica",
     "jgsjames": "julian",
     "suttree": "duncan",
-    "Sophie Bastow-Dormon": "sophie"
+    "Sophie Bastow-Dormon": "sophie",
+    "diespeker": "diespeker"
   },
   name_map : {
     "malbonster": "Tim Malbon",
