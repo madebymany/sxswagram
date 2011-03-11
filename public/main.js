@@ -114,20 +114,23 @@ UI = {
   },
 
   time : {
-    start : function () {
+    start: function () {
       var now = new Date();
-      var austinOffset = -6 * 60;
-      var browserOffset = now.getTimezoneOffset();
-      var timeInAustin = new Date(now.getTime() + (austinOffset + browserOffset) * 60000);
-      var h    = ((timeInAustin.getHours() + 11) % 12) + 1;
-          m    = timeInAustin.getMinutes(),
-          s    = timeInAustin.getSeconds(),
-          ampm = (timeInAustin.getHours() > 11) ? "pm" : "am";
+      $('#local_time time').html(UI.time.formatTimeForOffset(now, -6)).attr('datetime', now);
+      $('#london_time time').html(UI.time.formatTimeForOffset(now, 0)).attr('datetime', now);
+      setTimeout(UI.time.start, 5000);
+    },
+    formatTimeForOffset: function(time, offset){
+      var browserOffset = time.getTimezoneOffset();
+      var adjustedTime = new Date(time.getTime() + (offset * 60 + browserOffset) * 60000);
+      var h    = ((adjustedTime.getHours() + 11) % 12) + 1,
+          m    = adjustedTime.getMinutes(),
+          s    = adjustedTime.getSeconds(),
+          ampm = (adjustedTime.getHours() > 11) ? "pm" : "am";
 
       m = UI.time.zeroPad(m);
       s = UI.time.zeroPad(s);
-      $('#local_time time').html(h+":"+m+" "+ampm).attr('datetime', now);
-      setTimeout(UI.time.start, 5000);
+      return h+":"+m+" "+ampm;
     },
     zeroPad: function (i) {
       if (i<10) { i="0" + i; }
@@ -149,7 +152,7 @@ UI = {
         ih = ih + item.height();
       });
       $('li:first', meta).css('margin-top', (h - ih) / 2);
-      if ($('li', meta).length == 0) {
+      if ($('li', meta).length === 0) {
         meta.remove();
       }
     });

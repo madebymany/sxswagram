@@ -162,7 +162,6 @@ article {
 }
 #london_time {
   float:left;
-  display:none;
 }
 #local_time {
   float:right;
