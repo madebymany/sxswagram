@@ -119,7 +119,7 @@ UI = {
   time : {
     start: function () {
       var now = new Date();
-      $('#local_time time').html(UI.time.formatTimeForOffset(now, -6)).attr('datetime', now);
+      $('#local_time time').html(UI.time.formatTimeForOffset(now, -5)).attr('datetime', now);
       $('#london_time time').html(UI.time.formatTimeForOffset(now, 0)).attr('datetime', now);
       setTimeout(UI.time.start, 5000);
     },
