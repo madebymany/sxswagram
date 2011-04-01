@@ -1,5 +1,8 @@
 # Made by Many at SXSW 2011
 
+[Visit the blog post](http://madebymany.com/blog/sxsw-takeover-2011) to learn
+more about this project.
+
 ## Prerequisites
 
 * Node.js 0.4.2 + npm
