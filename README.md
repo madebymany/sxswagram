@@ -1,4 +1,4 @@
-# MxM at SxSW 2011
+# Made by Many at SXSW 2011
 
 ## Prerequisites
 
@@ -55,3 +55,7 @@ If necessary due to changes in storage format:
 
     mongo --eval 'db.updates.drop()' _DB_NAME_
     node script/seed.js
+
+## Copyright and licensing
+
+See the file COPYRIGHT for details.
